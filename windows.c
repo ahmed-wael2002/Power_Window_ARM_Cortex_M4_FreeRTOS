@@ -1,16 +1,34 @@
+// External Modules 
 #include "windows.h"
+#include "int.h"
+#include "motor.h"
+#include "DIO.h"
+
+#include "FreeRTOS.h"
+#include "task.h"
+#include "semphr.h"
+#include "queue.h"
+
 
 
 ////////// Global lock variable
 // Variable should be inaccessible from other modules 
 // static = private
 static uint8 g_isLocked = 0;
-static Window_type windows[NUM_OF_WINDOWS];
+
+void WINDOW_LockToggle(void){
+	// Toggle Lock function
+	g_isLocked ^= 1;
+}
 
  /*
  Function to initialize necessary pins and modules for the power windows
  */
- void WINDOW_init(void){
+ void WINDOW_init(void){	 
+    /**** Initializing Interrupt for Windows Lock switch *****/
+    INT_init(DRIVER_LOCK_PORT, DRIVER_LOCK_PIN);
+    INT_setCallBack(WINDOW_LockToggle);
+	 
     /**** Initializing GPIO Input Pins for control buttons/switches ****/
 
     // Initializing driver control board 
@@ -39,29 +57,71 @@ static Window_type windows[NUM_OF_WINDOWS];
     #endif
  }
 
-  void WINDOW_Task(void* pvParameter){
-    Window_type window = (Window_type *) pvParameter;
 
+
+void WINDOW_Task(void* pvParameter){
+    Window_type* window = (Window_type*)pvParameter;
+    // Application
     while(1){
         // Up Button Code
-        if ((window.id != DRIVER) && (g_isLocked == 1)){
-            /* Do Nothing*/
-        }
+        if ((window->id != DRIVER) && (g_isLocked == 1)) { /* Do Nothing*/ }
         else{
-            if (IS_ON(PASSENGER_UP_ACTION(window.id)) && (g_isLocked==0)){
-                while(IS_OFF(PASSENGER_UP_ACTION(window.id)) && (g_isLocked==0));
-                if (IS_ON(PASSENGER_UP_ACTION(window.id)) && (g_isLocked==0)){
-                    DcMotor_Rotate(window.id, ANTICLOCKWISE);
+            /*============================ UP DIRECTION =============================*/
+            if (IS_ON(window->up_port, window->up_pin) && (g_isLocked!=0)){
+                // Debouncing Delay
+                vTaskDelay(10 / portTICK_RATE_MS);
+                while(IS_ON(window->up_port, window->up_pin) && (g_isLocked!=0) && IS_OFF(window->top_limit_port, window->top_limit_pin)){
+                    DcMotor_Rotate(window->id % 2, ANTICLOCKWISE);
                 }
             }
-            else if (IS_ON(PASSENGER_DOWN_ACTION(window.id)) && (g_isLocked==0)){
-                while(IS_OFF(PASSENGER_DOWN_ACTION(window.id)) && (g_isLocked==0));
-                if (IS_ON(PASSENGER_DOWN_ACTION(window.id)) && (g_isLocked==0)){
-                    DcMotor_Rotate(window.id, CLOCKWISE);
-                }
-            }
-            DcMotor_Rotate(window.id, OFF);
-        }
 
+            /*============================ DOWN DIRECTION =============================*/
+            else if (IS_ON(window->down_port, window->down_pin) && (g_isLocked!=0)){
+                // Debouncing Delay
+                vTaskDelay(10 / portTICK_RATE_MS);
+                while(IS_ON(window->down_port, window->down_pin) && (g_isLocked!=0) && IS_OFF(window->bottom_limit_port, window->bottom_limit_pin)){
+                    DcMotor_Rotate(window->id % 2, ANTICLOCKWISE);
+                }
+            }
+
+            /*============================ ONE-TOUCH DIRECTION =============================*/
+            else if (IS_ON(window->auto_port, window->auto_pin) && (g_isLocked!=0)){
+                /******* Generic Task Creation for windows *******/
+                // One-touch task has priority higher than normal tasks
+                xTaskCreate(
+                    ONE_TOUCH,					// Task Function
+                    "One Touch",				// Debugging Task Name
+                    120,									// Stack Depth
+                    (void *)&window,			// We won't use Task Parameters
+                    2, 										// Task Priority = configMAX_PRIORITIES - 1 = 55
+                    NULL									// We don't need a task handle
+                );							
+            }
+            /*============================ RESETTING MOTOR =============================*/
+            DcMotor_Rotate(window->id % 2, OFF);
+        }
     }
-  }
+}
+	
+
+
+void ONE_TOUCH(void * pvParameters){
+    Window_type * window = (Window_type*)pvParameters;
+
+    // The window is currently closed -- triggering automatic open
+    if(IS_ON(window->top_limit_port, window->top_limit_pin)){
+        while(IS_OFF(window->bottom_limit_port, window->bottom_limit_pin)){
+            DcMotor_Rotate(window->id%2, DOWN);
+        }
+    }
+    // The window is fully or partially open -- triggering automatic close
+    else{
+        while(IS_OFF(window->top_limit_port, window->top_limit_pin)){
+            DcMotor_Rotate(window->id%2, UP);
+        }
+    }
+    // Stopping motor 
+    DcMotor_Rotate(window->id%2, OFF);
+    // Delete task for tasks queue and return to normal operations
+    vTaskDelete(NULL);
+}
