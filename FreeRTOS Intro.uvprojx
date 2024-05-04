@@ -382,13 +382,53 @@
       </TargetOption>
       <Groups>
         <Group>
-          <GroupName>Source Group 1</GroupName>
+          <GroupName>Application</GroupName>
           <Files>
             <File>
               <FileName>main.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\main.c</FilePath>
             </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>HAL</GroupName>
+          <Files>
+            <File>
+              <FileName>led.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\led.c</FilePath>
+            </File>
+            <File>
+              <FileName>led.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\led.h</FilePath>
+            </File>
+            <File>
+              <FileName>motor.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\motor.c</FilePath>
+            </File>
+            <File>
+              <FileName>motor.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\motor.h</FilePath>
+            </File>
+            <File>
+              <FileName>windows.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\windows.c</FilePath>
+            </File>
+            <File>
+              <FileName>windows.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\windows.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>MCAL</GroupName>
+          <Files>
             <File>
               <FileName>bitwise_operation.h</FileName>
               <FileType>5</FileType>
@@ -415,14 +455,14 @@
               <FilePath>.\DIO.h</FilePath>
             </File>
             <File>
-              <FileName>led.c</FileName>
+              <FileName>int.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\led.c</FilePath>
+              <FilePath>.\int.c</FilePath>
             </File>
             <File>
-              <FileName>led.h</FileName>
+              <FileName>int.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\led.h</FilePath>
+              <FilePath>.\int.h</FilePath>
             </File>
             <File>
               <FileName>tm4c123gh6pm.h</FileName>
@@ -443,36 +483,6 @@
               <FileName>uart.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\uart.h</FilePath>
-            </File>
-            <File>
-              <FileName>int.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\int.c</FilePath>
-            </File>
-            <File>
-              <FileName>int.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\int.h</FilePath>
-            </File>
-            <File>
-              <FileName>motor.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\motor.c</FilePath>
-            </File>
-            <File>
-              <FileName>motor.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\motor.h</FilePath>
-            </File>
-            <File>
-              <FileName>windows.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\windows.c</FilePath>
-            </File>
-            <File>
-              <FileName>windows.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\windows.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -596,5 +606,14 @@
       </file>
     </files>
   </RTE>
+
+  <LayerInfo>
+    <Layers>
+      <Layer>
+        <LayName>FreeRTOS Intro</LayName>
+        <LayPrjMark>1</LayPrjMark>
+      </Layer>
+    </Layers>
+  </LayerInfo>
 
 </Project>

@@ -7,6 +7,7 @@
 
 int main( void )
 {
+	// Initializing Windows using Init function 
 	WINDOW_init();
 	// Array of windows defined in the windows module 
 	extern Window_type windows[NUM_OF_WINDOWS];

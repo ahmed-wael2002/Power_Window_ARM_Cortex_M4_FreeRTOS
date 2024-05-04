@@ -11,14 +11,6 @@ Section Cross References
     main.o(.text.main) refers to tasks.o(.text.xTaskCreate) for xTaskCreate
     main.o(.ARM.exidx.text.main) refers to main.o(.text.main) for [Anonymous Symbol]
     main.o(.ARM.exidx.text.vApplicationIdleHook) refers to main.o(.text.vApplicationIdleHook) for [Anonymous Symbol]
-    delay.o(.ARM.exidx.text._delay_sec) refers to delay.o(.text._delay_sec) for [Anonymous Symbol]
-    delay.o(.ARM.exidx.text._delay_ms) refers to delay.o(.text._delay_ms) for [Anonymous Symbol]
-    dio.o(.ARM.exidx.text.DIO_Init) refers to dio.o(.text.DIO_Init) for [Anonymous Symbol]
-    dio.o(.ARM.exidx.text.DIO_writePin) refers to dio.o(.text.DIO_writePin) for [Anonymous Symbol]
-    dio.o(.ARM.exidx.text.DIO_writePort) refers to dio.o(.text.DIO_writePort) for [Anonymous Symbol]
-    dio.o(.ARM.exidx.text.DIO_readPin) refers to dio.o(.text.DIO_readPin) for [Anonymous Symbol]
-    dio.o(.ARM.exidx.text.DIO_readPort) refers to dio.o(.text.DIO_readPort) for [Anonymous Symbol]
-    dio.o(.ARM.exidx.text.DIO_togglePin) refers to dio.o(.text.DIO_togglePin) for [Anonymous Symbol]
     led.o(.text.LED_init) refers to dio.o(.text.DIO_Init) for DIO_Init
     led.o(.ARM.exidx.text.LED_init) refers to led.o(.text.LED_init) for [Anonymous Symbol]
     led.o(.text.LED_turnOn) refers to dio.o(.text.DIO_writePin) for DIO_writePin
@@ -27,6 +19,47 @@ Section Cross References
     led.o(.ARM.exidx.text.LED_turnOff) refers to led.o(.text.LED_turnOff) for [Anonymous Symbol]
     led.o(.text.LED_toggle) refers to dio.o(.text.DIO_togglePin) for DIO_togglePin
     led.o(.ARM.exidx.text.LED_toggle) refers to led.o(.text.LED_toggle) for [Anonymous Symbol]
+    motor.o(.text.DcMotor_init) refers to dio.o(.text.DIO_Init) for DIO_Init
+    motor.o(.text.DcMotor_init) refers to dio.o(.text.DIO_writePin) for DIO_writePin
+    motor.o(.ARM.exidx.text.DcMotor_init) refers to motor.o(.text.DcMotor_init) for [Anonymous Symbol]
+    motor.o(.text.DcMotor_Rotate) refers to dio.o(.text.DIO_writePin) for DIO_writePin
+    motor.o(.ARM.exidx.text.DcMotor_Rotate) refers to motor.o(.text.DcMotor_Rotate) for [Anonymous Symbol]
+    windows.o(.text.WINDOW_LockToggle) refers to windows.o(.bss.g_isLocked) for g_isLocked
+    windows.o(.ARM.exidx.text.WINDOW_LockToggle) refers to windows.o(.text.WINDOW_LockToggle) for [Anonymous Symbol]
+    windows.o(.text.WINDOW_init) refers to windows.o(.bss.windows) for windows
+    windows.o(.text.WINDOW_init) refers to int.o(.text.INT_init) for INT_init
+    windows.o(.text.WINDOW_init) refers to windows.o(.text.WINDOW_LockToggle) for WINDOW_LockToggle
+    windows.o(.text.WINDOW_init) refers to int.o(.text.INT_setCallBack) for INT_setCallBack
+    windows.o(.text.WINDOW_init) refers to dio.o(.text.DIO_Init) for DIO_Init
+    windows.o(.ARM.exidx.text.WINDOW_init) refers to windows.o(.text.WINDOW_init) for [Anonymous Symbol]
+    windows.o(.text.WINDOW_Task) refers to windows.o(.bss.g_isLocked) for g_isLocked
+    windows.o(.text.WINDOW_Task) refers to dio.o(.text.DIO_readPin) for DIO_readPin
+    windows.o(.text.WINDOW_Task) refers to tasks.o(.text.vTaskDelay) for vTaskDelay
+    windows.o(.text.WINDOW_Task) refers to motor.o(.text.DcMotor_Rotate) for DcMotor_Rotate
+    windows.o(.ARM.exidx.text.WINDOW_Task) refers to windows.o(.text.WINDOW_Task) for [Anonymous Symbol]
+    delay.o(.ARM.exidx.text._delay_sec) refers to delay.o(.text._delay_sec) for [Anonymous Symbol]
+    delay.o(.ARM.exidx.text._delay_ms) refers to delay.o(.text._delay_ms) for [Anonymous Symbol]
+    dio.o(.ARM.exidx.text.DIO_Init) refers to dio.o(.text.DIO_Init) for [Anonymous Symbol]
+    dio.o(.ARM.exidx.text.DIO_writePin) refers to dio.o(.text.DIO_writePin) for [Anonymous Symbol]
+    dio.o(.ARM.exidx.text.DIO_writePort) refers to dio.o(.text.DIO_writePort) for [Anonymous Symbol]
+    dio.o(.ARM.exidx.text.DIO_readPin) refers to dio.o(.text.DIO_readPin) for [Anonymous Symbol]
+    dio.o(.ARM.exidx.text.DIO_readPort) refers to dio.o(.text.DIO_readPort) for [Anonymous Symbol]
+    dio.o(.ARM.exidx.text.DIO_togglePin) refers to dio.o(.text.DIO_togglePin) for [Anonymous Symbol]
+    int.o(.ARM.exidx.text.INT_init) refers to int.o(.text.INT_init) for [Anonymous Symbol]
+    int.o(.text.INT_setCallBack) refers to int.o(.bss.callBackPtr) for callBackPtr
+    int.o(.ARM.exidx.text.INT_setCallBack) refers to int.o(.text.INT_setCallBack) for [Anonymous Symbol]
+    int.o(.text.GPIOA_Handler) refers to int.o(.bss.callBackPtr) for callBackPtr
+    int.o(.ARM.exidx.text.GPIOA_Handler) refers to int.o(.text.GPIOA_Handler) for [Anonymous Symbol]
+    int.o(.text.GPIOB_Handler) refers to int.o(.bss.callBackPtr) for callBackPtr
+    int.o(.ARM.exidx.text.GPIOB_Handler) refers to int.o(.text.GPIOB_Handler) for [Anonymous Symbol]
+    int.o(.text.GPIOC_Handler) refers to int.o(.bss.callBackPtr) for callBackPtr
+    int.o(.ARM.exidx.text.GPIOC_Handler) refers to int.o(.text.GPIOC_Handler) for [Anonymous Symbol]
+    int.o(.text.GPIOD_Handler) refers to int.o(.bss.callBackPtr) for callBackPtr
+    int.o(.ARM.exidx.text.GPIOD_Handler) refers to int.o(.text.GPIOD_Handler) for [Anonymous Symbol]
+    int.o(.text.GPIOE_Handler) refers to int.o(.bss.callBackPtr) for callBackPtr
+    int.o(.ARM.exidx.text.GPIOE_Handler) refers to int.o(.text.GPIOE_Handler) for [Anonymous Symbol]
+    int.o(.text.GPIOF_Handler) refers to int.o(.bss.callBackPtr) for callBackPtr
+    int.o(.ARM.exidx.text.GPIOF_Handler) refers to int.o(.text.GPIOF_Handler) for [Anonymous Symbol]
     uart.o(.text.UART_init) refers to fflt_clz.o(x$fpl$ffltu) for __aeabi_ui2f
     uart.o(.text.UART_init) refers to f2d.o(x$fpl$f2d) for __aeabi_f2d
     uart.o(.text.UART_init) refers to dmul.o(x$fpl$dmul) for __aeabi_dmul
@@ -49,39 +82,6 @@ Section Cross References
     uart.o(.ARM.exidx.text.UART_receiveString) refers to uart.o(.text.UART_receiveString) for [Anonymous Symbol]
     uart.o(.text.UART_sendInteger) refers to uart.o(.text.UART_sendByte) for UART_sendByte
     uart.o(.ARM.exidx.text.UART_sendInteger) refers to uart.o(.text.UART_sendInteger) for [Anonymous Symbol]
-    int.o(.ARM.exidx.text.INT_init) refers to int.o(.text.INT_init) for [Anonymous Symbol]
-    int.o(.text.INT_setCallBack) refers to int.o(.bss.callBackPtr) for callBackPtr
-    int.o(.ARM.exidx.text.INT_setCallBack) refers to int.o(.text.INT_setCallBack) for [Anonymous Symbol]
-    int.o(.text.GPIOA_Handler) refers to int.o(.bss.callBackPtr) for callBackPtr
-    int.o(.ARM.exidx.text.GPIOA_Handler) refers to int.o(.text.GPIOA_Handler) for [Anonymous Symbol]
-    int.o(.text.GPIOB_Handler) refers to int.o(.bss.callBackPtr) for callBackPtr
-    int.o(.ARM.exidx.text.GPIOB_Handler) refers to int.o(.text.GPIOB_Handler) for [Anonymous Symbol]
-    int.o(.text.GPIOC_Handler) refers to int.o(.bss.callBackPtr) for callBackPtr
-    int.o(.ARM.exidx.text.GPIOC_Handler) refers to int.o(.text.GPIOC_Handler) for [Anonymous Symbol]
-    int.o(.text.GPIOD_Handler) refers to int.o(.bss.callBackPtr) for callBackPtr
-    int.o(.ARM.exidx.text.GPIOD_Handler) refers to int.o(.text.GPIOD_Handler) for [Anonymous Symbol]
-    int.o(.text.GPIOE_Handler) refers to int.o(.bss.callBackPtr) for callBackPtr
-    int.o(.ARM.exidx.text.GPIOE_Handler) refers to int.o(.text.GPIOE_Handler) for [Anonymous Symbol]
-    int.o(.text.GPIOF_Handler) refers to int.o(.bss.callBackPtr) for callBackPtr
-    int.o(.ARM.exidx.text.GPIOF_Handler) refers to int.o(.text.GPIOF_Handler) for [Anonymous Symbol]
-    motor.o(.text.DcMotor_init) refers to dio.o(.text.DIO_Init) for DIO_Init
-    motor.o(.text.DcMotor_init) refers to dio.o(.text.DIO_writePin) for DIO_writePin
-    motor.o(.ARM.exidx.text.DcMotor_init) refers to motor.o(.text.DcMotor_init) for [Anonymous Symbol]
-    motor.o(.text.DcMotor_Rotate) refers to dio.o(.text.DIO_writePin) for DIO_writePin
-    motor.o(.ARM.exidx.text.DcMotor_Rotate) refers to motor.o(.text.DcMotor_Rotate) for [Anonymous Symbol]
-    windows.o(.text.WINDOW_LockToggle) refers to windows.o(.bss.g_isLocked) for g_isLocked
-    windows.o(.ARM.exidx.text.WINDOW_LockToggle) refers to windows.o(.text.WINDOW_LockToggle) for [Anonymous Symbol]
-    windows.o(.text.WINDOW_init) refers to windows.o(.bss.windows) for windows
-    windows.o(.text.WINDOW_init) refers to int.o(.text.INT_init) for INT_init
-    windows.o(.text.WINDOW_init) refers to windows.o(.text.WINDOW_LockToggle) for WINDOW_LockToggle
-    windows.o(.text.WINDOW_init) refers to int.o(.text.INT_setCallBack) for INT_setCallBack
-    windows.o(.text.WINDOW_init) refers to dio.o(.text.DIO_Init) for DIO_Init
-    windows.o(.ARM.exidx.text.WINDOW_init) refers to windows.o(.text.WINDOW_init) for [Anonymous Symbol]
-    windows.o(.text.WINDOW_Task) refers to windows.o(.bss.g_isLocked) for g_isLocked
-    windows.o(.text.WINDOW_Task) refers to dio.o(.text.DIO_readPin) for DIO_readPin
-    windows.o(.text.WINDOW_Task) refers to tasks.o(.text.vTaskDelay) for vTaskDelay
-    windows.o(.text.WINDOW_Task) refers to motor.o(.text.DcMotor_Rotate) for DcMotor_Rotate
-    windows.o(.ARM.exidx.text.WINDOW_Task) refers to windows.o(.text.WINDOW_Task) for [Anonymous Symbol]
     clib_arm.o(.ARM.exidx.text._platform_post_stackheap_init) refers to clib_arm.o(.text._platform_post_stackheap_init) for [Anonymous Symbol]
     clib_arm.o(.text.__user_perthread_libspace) refers to clib_arm.o(.text.os_kernel_is_active) for os_kernel_is_active
     clib_arm.o(.text.__user_perthread_libspace) refers to clib_arm.o(.bss.os_libspace) for os_libspace
@@ -1302,6 +1302,23 @@ Removing Unused input sections from the image.
     Removing main.o(.text.vApplicationIdleHook), (4 bytes).
     Removing main.o(.ARM.exidx.text.vApplicationIdleHook), (8 bytes).
     Removing main.o(.ARM.use_no_argv), (4 bytes).
+    Removing led.o(.text), (0 bytes).
+    Removing led.o(.text.LED_init), (42 bytes).
+    Removing led.o(.ARM.exidx.text.LED_init), (8 bytes).
+    Removing led.o(.text.LED_turnOn), (106 bytes).
+    Removing led.o(.ARM.exidx.text.LED_turnOn), (8 bytes).
+    Removing led.o(.text.LED_turnOff), (106 bytes).
+    Removing led.o(.ARM.exidx.text.LED_turnOff), (8 bytes).
+    Removing led.o(.text.LED_toggle), (92 bytes).
+    Removing led.o(.ARM.exidx.text.LED_toggle), (8 bytes).
+    Removing motor.o(.text), (0 bytes).
+    Removing motor.o(.text.DcMotor_init), (136 bytes).
+    Removing motor.o(.ARM.exidx.text.DcMotor_init), (8 bytes).
+    Removing motor.o(.ARM.exidx.text.DcMotor_Rotate), (8 bytes).
+    Removing windows.o(.text), (0 bytes).
+    Removing windows.o(.ARM.exidx.text.WINDOW_LockToggle), (8 bytes).
+    Removing windows.o(.ARM.exidx.text.WINDOW_init), (8 bytes).
+    Removing windows.o(.ARM.exidx.text.WINDOW_Task), (8 bytes).
     Removing delay.o(.text), (0 bytes).
     Removing delay.o(.text._delay_sec), (82 bytes).
     Removing delay.o(.ARM.exidx.text._delay_sec), (8 bytes).
@@ -1317,15 +1334,15 @@ Removing Unused input sections from the image.
     Removing dio.o(.ARM.exidx.text.DIO_readPort), (8 bytes).
     Removing dio.o(.text.DIO_togglePin), (218 bytes).
     Removing dio.o(.ARM.exidx.text.DIO_togglePin), (8 bytes).
-    Removing led.o(.text), (0 bytes).
-    Removing led.o(.text.LED_init), (42 bytes).
-    Removing led.o(.ARM.exidx.text.LED_init), (8 bytes).
-    Removing led.o(.text.LED_turnOn), (106 bytes).
-    Removing led.o(.ARM.exidx.text.LED_turnOn), (8 bytes).
-    Removing led.o(.text.LED_turnOff), (106 bytes).
-    Removing led.o(.ARM.exidx.text.LED_turnOff), (8 bytes).
-    Removing led.o(.text.LED_toggle), (92 bytes).
-    Removing led.o(.ARM.exidx.text.LED_toggle), (8 bytes).
+    Removing int.o(.text), (0 bytes).
+    Removing int.o(.ARM.exidx.text.INT_init), (8 bytes).
+    Removing int.o(.ARM.exidx.text.INT_setCallBack), (8 bytes).
+    Removing int.o(.ARM.exidx.text.GPIOA_Handler), (8 bytes).
+    Removing int.o(.ARM.exidx.text.GPIOB_Handler), (8 bytes).
+    Removing int.o(.ARM.exidx.text.GPIOC_Handler), (8 bytes).
+    Removing int.o(.ARM.exidx.text.GPIOD_Handler), (8 bytes).
+    Removing int.o(.ARM.exidx.text.GPIOE_Handler), (8 bytes).
+    Removing int.o(.ARM.exidx.text.GPIOF_Handler), (8 bytes).
     Removing uart.o(.text), (0 bytes).
     Removing uart.o(.text.UART_init), (1654 bytes).
     Removing uart.o(.ARM.exidx.text.UART_init), (8 bytes).
@@ -1339,23 +1356,6 @@ Removing Unused input sections from the image.
     Removing uart.o(.ARM.exidx.text.UART_receiveString), (8 bytes).
     Removing uart.o(.text.UART_sendInteger), (162 bytes).
     Removing uart.o(.ARM.exidx.text.UART_sendInteger), (8 bytes).
-    Removing int.o(.text), (0 bytes).
-    Removing int.o(.ARM.exidx.text.INT_init), (8 bytes).
-    Removing int.o(.ARM.exidx.text.INT_setCallBack), (8 bytes).
-    Removing int.o(.ARM.exidx.text.GPIOA_Handler), (8 bytes).
-    Removing int.o(.ARM.exidx.text.GPIOB_Handler), (8 bytes).
-    Removing int.o(.ARM.exidx.text.GPIOC_Handler), (8 bytes).
-    Removing int.o(.ARM.exidx.text.GPIOD_Handler), (8 bytes).
-    Removing int.o(.ARM.exidx.text.GPIOE_Handler), (8 bytes).
-    Removing int.o(.ARM.exidx.text.GPIOF_Handler), (8 bytes).
-    Removing motor.o(.text), (0 bytes).
-    Removing motor.o(.text.DcMotor_init), (136 bytes).
-    Removing motor.o(.ARM.exidx.text.DcMotor_init), (8 bytes).
-    Removing motor.o(.ARM.exidx.text.DcMotor_Rotate), (8 bytes).
-    Removing windows.o(.text), (0 bytes).
-    Removing windows.o(.ARM.exidx.text.WINDOW_LockToggle), (8 bytes).
-    Removing windows.o(.ARM.exidx.text.WINDOW_init), (8 bytes).
-    Removing windows.o(.ARM.exidx.text.WINDOW_Task), (8 bytes).
     Removing clib_arm.o(.text), (0 bytes).
     Removing clib_arm.o(.ARM.exidx.text._platform_post_stackheap_init), (8 bytes).
     Removing clib_arm.o(.text.__user_perthread_libspace), (186 bytes).
@@ -2608,22 +2608,22 @@ Memory Map of the image
     0x00000658   0x00000658   0x00000002   Code   RO         1012    .text               c_w.l(use_no_semi.o)
     0x0000065a   0x0000065a   0x00000000   Code   RO         1014    .text               c_w.l(indicate_semi.o)
     0x0000065a   0x0000065a   0x00000002   PAD
-    0x0000065c   0x0000065c   0x000003be   Code   RO           26    .text.DIO_Init      dio.o
+    0x0000065c   0x0000065c   0x000003be   Code   RO           67    .text.DIO_Init      dio.o
     0x00000a1a   0x00000a1a   0x00000002   PAD
-    0x00000a1c   0x00000a1c   0x00000142   Code   RO           32    .text.DIO_readPin   dio.o
+    0x00000a1c   0x00000a1c   0x00000142   Code   RO           73    .text.DIO_readPin   dio.o
     0x00000b5e   0x00000b5e   0x00000002   PAD
-    0x00000b60   0x00000b60   0x000001c4   Code   RO           28    .text.DIO_writePin  dio.o
-    0x00000d24   0x00000d24   0x00000102   Code   RO          105    .text.DcMotor_Rotate  motor.o
+    0x00000b60   0x00000b60   0x000001c4   Code   RO           69    .text.DIO_writePin  dio.o
+    0x00000d24   0x00000d24   0x00000102   Code   RO           32    .text.DcMotor_Rotate  motor.o
     0x00000e26   0x00000e26   0x00000002   PAD
-    0x00000e28   0x00000e28   0x00000020   Code   RO           83    .text.GPIOA_Handler  int.o
-    0x00000e48   0x00000e48   0x00000020   Code   RO           85    .text.GPIOB_Handler  int.o
-    0x00000e68   0x00000e68   0x00000020   Code   RO           87    .text.GPIOC_Handler  int.o
-    0x00000e88   0x00000e88   0x00000020   Code   RO           89    .text.GPIOD_Handler  int.o
-    0x00000ea8   0x00000ea8   0x00000020   Code   RO           91    .text.GPIOE_Handler  int.o
-    0x00000ec8   0x00000ec8   0x00000020   Code   RO           93    .text.GPIOF_Handler  int.o
-    0x00000ee8   0x00000ee8   0x0000033a   Code   RO           79    .text.INT_init      int.o
+    0x00000e28   0x00000e28   0x00000020   Code   RO           90    .text.GPIOA_Handler  int.o
+    0x00000e48   0x00000e48   0x00000020   Code   RO           92    .text.GPIOB_Handler  int.o
+    0x00000e68   0x00000e68   0x00000020   Code   RO           94    .text.GPIOC_Handler  int.o
+    0x00000e88   0x00000e88   0x00000020   Code   RO           96    .text.GPIOD_Handler  int.o
+    0x00000ea8   0x00000ea8   0x00000020   Code   RO           98    .text.GPIOE_Handler  int.o
+    0x00000ec8   0x00000ec8   0x00000020   Code   RO          100    .text.GPIOF_Handler  int.o
+    0x00000ee8   0x00000ee8   0x0000033a   Code   RO           86    .text.INT_init      int.o
     0x00001222   0x00001222   0x00000002   PAD
-    0x00001224   0x00001224   0x00000034   Code   RO           81    .text.INT_setCallBack  int.o
+    0x00001224   0x00001224   0x00000034   Code   RO           88    .text.INT_setCallBack  int.o
     0x00001258   0x00001258   0x00000008   PAD
     0x00001260   0x00001260   0x00000044   Code   RO          488    .text.PendSV_Handler  port.o
     0x000012a4   0x000012a4   0x0000000c   PAD
@@ -2632,10 +2632,10 @@ Memory Map of the image
     0x000012f2   0x000012f2   0x00000002   PAD
     0x000012f4   0x000012f4   0x00000002   Code   RO          405    .text.SystemInit    system_tm4c123.o
     0x000012f6   0x000012f6   0x00000002   PAD
-    0x000012f8   0x000012f8   0x00000012   Code   RO          114    .text.WINDOW_LockToggle  windows.o
+    0x000012f8   0x000012f8   0x00000012   Code   RO           41    .text.WINDOW_LockToggle  windows.o
     0x0000130a   0x0000130a   0x00000002   PAD
-    0x0000130c   0x0000130c   0x00000200   Code   RO          118    .text.WINDOW_Task   windows.o
-    0x0000150c   0x0000150c   0x000000a0   Code   RO          116    .text.WINDOW_init   windows.o
+    0x0000130c   0x0000130c   0x00000200   Code   RO           45    .text.WINDOW_Task   windows.o
+    0x0000150c   0x0000150c   0x000000a0   Code   RO           43    .text.WINDOW_init   windows.o
     0x000015ac   0x000015ac   0x00000028   Code   RO          137    .text._mutex_acquire  clib_arm.o
     0x000015d4   0x000015d4   0x00000054   Code   RO          143    .text._mutex_free   clib_arm.o
     0x00001628   0x00001628   0x000000a8   Code   RO          135    .text._mutex_initialize  clib_arm.o
@@ -2744,10 +2744,10 @@ Memory Map of the image
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
     0x20000008        -       0x00000060   Zero   RW          935    .bss                c_w.l(libspace.o)
-    0x20000068        -       0x00000018   Zero   RW           95    .bss.callBackPtr    int.o
+    0x20000068        -       0x00000018   Zero   RW          102    .bss.callBackPtr    int.o
     0x20000080        -       0x00000190   Zero   RW          148    .bss.clib_mutex_cb  clib_arm.o
     0x20000210        -       0x00000014   Zero   RW          147    .bss.clib_mutex_id  clib_arm.o
-    0x20000224        -       0x00000001   Zero   RW          120    .bss.g_isLocked     windows.o
+    0x20000224        -       0x00000001   Zero   RW           47    .bss.g_isLocked     windows.o
     0x20000225   0x000035c4   0x00000003   PAD
     0x20000228        -       0x00000004   Zero   RW          737    .bss.pxCurrentTCB   tasks.o
     0x2000022c        -       0x00000004   Zero   RW          745    .bss.pxDelayedTaskList  tasks.o
@@ -2759,7 +2759,7 @@ Memory Map of the image
     0x2000269c        -       0x00000004   Zero   RW          750    .bss.uxSchedulerSuspended  tasks.o
     0x200026a0        -       0x00000004   Zero   RW          739    .bss.uxTaskNumber   tasks.o
     0x200026a4        -       0x00000004   Zero   RW          749    .bss.uxTopReadyPriority  tasks.o
-    0x200026a8        -       0x0000001a   Zero   RW          121    .bss.windows        windows.o
+    0x200026a8        -       0x0000001a   Zero   RW           48    .bss.windows        windows.o
     0x200026c2   0x000035c4   0x00000002   PAD
     0x200026c4        -       0x00000014   Zero   RW          758    .bss.xDelayedTaskList1  tasks.o
     0x200026d8        -       0x00000014   Zero   RW          759    .bss.xDelayedTaskList2  tasks.o
