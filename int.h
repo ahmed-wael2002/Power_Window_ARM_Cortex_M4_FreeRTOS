@@ -1,5 +1,6 @@
 #include "types.h"
 
+#define NUM_OF_PORTS    6
 
 #define PIN0_ID         0
 #define PIN1_ID         1
@@ -24,6 +25,6 @@
 void INT_init(uint8 portNumber, uint8 pinNumber);
 
 // Function to set the callback function
-void INT_setCallBack(void(*a_ptr)(void));
+void INT_setCallBack(uint8 portNumber, void(*a_ptr)(void));
 
 

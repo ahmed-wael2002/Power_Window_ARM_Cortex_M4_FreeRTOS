@@ -71,28 +71,84 @@ void INT_init(uint8 portNumber, uint8 pinNumber)
     }
 }
 
-static volatile void (*callBackPtr)(void) = NULL;
+volatile void (*callBackPtr[NUM_OF_PORTS])(void)  = {NULL};
 
 /* Function to set call back */
-void INT_setCallBack(void (*a_ptr)(void))
+void INT_setCallBack(uint8 portNumber, void(*a_ptr)(void))
 {
-    /* Save the address of the Call back function in a global variable */
-    callBackPtr = a_ptr;
+    if((portNumber >= 0) && (portNumber < NUM_OF_PORTS)){
+        /* Save the address of the Call back function in a global variable */
+        callBackPtr[portNumber] = (volatile void (*) (void))a_ptr;
+    }
 }
 
 /*===============================================================================*/
 /*                             INTERRUPT HANDLERS                                */
 /*===============================================================================*/
 
+//********************* PORT A - Handler
+void GPIOA_Handler(void)
+{
+    if (callBackPtr != NULL)
+    {
+        /* Call the Call Back function in the application after the edge is detected */
+        (*callBackPtr[PORTA_ID])(); /* another method to call the function using pointer to function g_callBackPtr(); */
+        SET_BIT(GPIO_PORTA_ICR_R, PIN0_ID);
+    }
+}
 
+//********************* PORT B - Handler
+void GPIOB_Handler(void)
+{
+    if (callBackPtr != NULL)
+    {
+        /* Call the Call Back function in the application after the edge is detected */
+        (*callBackPtr[PORTB_ID])(); /* another method to call the function using pointer to function g_callBackPtr(); */
+        SET_BIT(GPIO_PORTB_ICR_R, PIN0_ID);
+    }
+}
 
+//********************* PORT C - Handler
+void GPIOC_Handler(void)
+{
+    if (callBackPtr != NULL)
+    {
+        /* Call the Call Back function in the application after the edge is detected */
+        (*callBackPtr[PORTC_ID])(); /* another method to call the function using pointer to function g_callBackPtr(); */
+        SET_BIT(GPIO_PORTC_ICR_R, PIN0_ID);
+    }
+}
+
+//********************* PORT D - Handler
 void GPIOD_Handler(void)
 {
     if (callBackPtr != NULL)
     {
         /* Call the Call Back function in the application after the edge is detected */
-        (*callBackPtr)(); /* another method to call the function using pointer to function g_callBackPtr(); */
+        (*callBackPtr[PORTD_ID])(); /* another method to call the function using pointer to function g_callBackPtr(); */
         SET_BIT(GPIO_PORTD_ICR_R, PIN0_ID);
+    }
+}
+
+//********************* PORT E - Handler
+void GPIOE_Handler(void)
+{
+    if (callBackPtr != NULL)
+    {
+        /* Call the Call Back function in the application after the edge is detected */
+        (*callBackPtr[PORTE_ID])(); /* another method to call the function using pointer to function g_callBackPtr(); */
+        SET_BIT(GPIO_PORTE_ICR_R, PIN0_ID);
+    }
+}
+
+//********************* PORT F - Handler
+void GPIOF_Handler(void)
+{
+    if (callBackPtr != NULL)
+    {
+        /* Call the Call Back function in the application after the edge is detected */
+        (*callBackPtr[PORTF_ID])(); /* another method to call the function using pointer to function g_callBackPtr(); */
+        SET_BIT(GPIO_PORTF_ICR_R, PIN0_ID);
     }
 }
 

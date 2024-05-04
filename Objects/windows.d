@@ -1,10 +1,4 @@
-./objects/windows.o: \
-  ..\..\..\Semester\ 7\3\ Intro\ to\ Embedded\ Systems\Project\ Repo\Tiva\ C\windows.c \
-  ..\..\..\Semester\ 7\3\ Intro\ to\ Embedded\ Systems\Project\ Repo\Tiva\ C\windows.h \
-  ..\..\..\Semester\ 7\3\ Intro\ to\ Embedded\ Systems\Project\ Repo\Tiva\ C\types.h \
-  ..\..\..\Semester\ 7\3\ Intro\ to\ Embedded\ Systems\Project\ Repo\Tiva\ C\int.h \
-  ..\..\..\Semester\ 7\3\ Intro\ to\ Embedded\ Systems\Project\ Repo\Tiva\ C\motor.h \
-  ..\..\..\Semester\ 7\3\ Intro\ to\ Embedded\ Systems\Project\ Repo\Tiva\ C\DIO.h \
+./objects/windows.o: windows.c windows.h types.h motor.h DIO.h int.h \
   C:\Users\ahmed\AppData\Local\Arm\Packs\ARM\CMSIS-FreeRTOS\10.5.1\Source\include\FreeRTOS.h \
   C:\Keil_v5\ARM\ARMCLANG\include\stddef.h \
   C:\Keil_v5\ARM\ARMCLANG\include\stdint.h RTE\RTOS\FreeRTOSConfig.h \

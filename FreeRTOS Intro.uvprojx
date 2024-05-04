@@ -390,49 +390,9 @@
               <FilePath>.\main.c</FilePath>
             </File>
             <File>
-              <FileName>led.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\led.c</FilePath>
-            </File>
-            <File>
-              <FileName>led.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\led.h</FilePath>
-            </File>
-            <File>
               <FileName>bitwise_operation.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\bitwise_operation.h</FilePath>
-            </File>
-            <File>
-              <FileName>DIO.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\DIO.c</FilePath>
-            </File>
-            <File>
-              <FileName>DIO.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\DIO.h</FilePath>
-            </File>
-            <File>
-              <FileName>types.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\types.h</FilePath>
-            </File>
-            <File>
-              <FileName>tm4c123gh6pm.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\tm4c123gh6pm.h</FilePath>
-            </File>
-            <File>
-              <FileName>uart.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\uart.c</FilePath>
-            </File>
-            <File>
-              <FileName>uart.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\uart.h</FilePath>
             </File>
             <File>
               <FileName>delay.c</FileName>
@@ -445,34 +405,74 @@
               <FilePath>.\delay.h</FilePath>
             </File>
             <File>
-              <FileName>windows.c</FileName>
+              <FileName>DIO.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\Semester 7\3 Intro to Embedded Systems\Project Repo\Tiva C\windows.c</FilePath>
+              <FilePath>.\DIO.c</FilePath>
             </File>
             <File>
-              <FileName>windows.h</FileName>
+              <FileName>DIO.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\..\..\Semester 7\3 Intro to Embedded Systems\Project Repo\Tiva C\windows.h</FilePath>
+              <FilePath>.\DIO.h</FilePath>
+            </File>
+            <File>
+              <FileName>led.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\led.c</FilePath>
+            </File>
+            <File>
+              <FileName>led.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\led.h</FilePath>
+            </File>
+            <File>
+              <FileName>tm4c123gh6pm.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\tm4c123gh6pm.h</FilePath>
+            </File>
+            <File>
+              <FileName>types.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\types.h</FilePath>
+            </File>
+            <File>
+              <FileName>uart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\uart.c</FilePath>
+            </File>
+            <File>
+              <FileName>uart.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\uart.h</FilePath>
             </File>
             <File>
               <FileName>int.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\Semester 7\3 Intro to Embedded Systems\Project Repo\Tiva C\int.c</FilePath>
+              <FilePath>.\int.c</FilePath>
             </File>
             <File>
               <FileName>int.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\..\..\Semester 7\3 Intro to Embedded Systems\Project Repo\Tiva C\int.h</FilePath>
+              <FilePath>.\int.h</FilePath>
             </File>
             <File>
               <FileName>motor.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\Semester 7\3 Intro to Embedded Systems\Project Repo\Tiva C\motor.c</FilePath>
+              <FilePath>.\motor.c</FilePath>
             </File>
             <File>
               <FileName>motor.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\..\..\Semester 7\3 Intro to Embedded Systems\Project Repo\Tiva C\motor.h</FilePath>
+              <FilePath>.\motor.h</FilePath>
+            </File>
+            <File>
+              <FileName>windows.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\windows.c</FilePath>
+            </File>
+            <File>
+              <FileName>windows.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\windows.h</FilePath>
             </File>
           </Files>
         </Group>
