@@ -16,80 +16,118 @@
 This is the header file for the application layer of Power Windows Application
 */
 
-/******************************************
- * 			MACROS DEFINITIONS
- ******************************************/
- /*=============== GPIO ================*/
+/*************************************************************************************************************
+ *                                            MACROS DEFINITION
+ *************************************************************************************************************/
 
- #define NUM_OF_WINDOWS     2       // Define the number of windows in the system (4: Sedan - 2: Coupe)
- #define DRIVER_LOCATION    0       // Define the driver seat with the location (UK standard - UN standard) [0-NUM_OF_WINDOWS - 1]
- 
- #define DRIVER_UP_PORT                 PORTB_ID
- #define DRIVER_UP_PIN                  PIN0_ID
- #define DRIVER_DOWN_PORT               PORTB_ID
- #define DRIVER_DOWN_PIN                PIN0_ID
- #define DRIVER_ONE_TOUCH_PORT          PORTB_ID
- #define DRIVER_ONE_TOUCH_PIN           PIN0_ID
- #define DRIVER_LOCK_PORT               PORTD_ID
- #define DRIVER_LOCK_PIN                PIN0_ID
- #define DRIVER_TOP_LIMIT_PORT          PORTB_ID
- #define DRIVER_TOP_LIMIT_PIN           PIN0_ID
- #define DRIVER_BOTTOM_LIMIT_PORT       PORTB_ID
- #define DRIVER_BOTTOM_LIMIT_PIN        PIN0_ID
- #define DRIVER_JAM_PORT                PORTA_ID
- #define DRIVER_JAM_PIN                 PIN0_ID
- 
+ /*=============== SYSTEM STATIC CONFIGURATIONS ================*/
 
- #define PASSENGER1_UP_PORT             PORTB_ID
- #define PASSENGER1_UP_PIN              PIN0_ID
- #define PASSENGER1_DOWN_PORT           PORTB_ID
- #define PASSENGER1_DOWN_PIN            PIN0_ID
- #define PASSENGER1_ONE_TOUCH_PORT      PORTB_ID
- #define PASSENGER1_ONE_TOUCH_PIN       PIN0_ID
- #define PASSENGER1_TOP_LIMIT_PORT      PORTB_ID
- #define PASSENGER1_TOP_LIMIT_PIN       PIN0_ID
- #define PASSENGER1_BOTTOM_LIMIT_PORT   PORTB_ID
- #define PASSENGER1_BOTTOM_LIMIT_PIN    PIN0_ID
- #define PASSENGER1_JAM_PORT            PORTA_ID
- #define PASSENGER1_JAM_PIN             PIN0_ID
- 
- #if (NUM_OF_WINDOWS == 4)
+#define NUM_OF_WINDOWS     2       // Define the number of windows in the system (4: Sedan - 2: Coupe)
+#define DRIVER_LOCATION    0       // Define the driver seat with the location (UK standard - UN standard) [0-NUM_OF_WINDOWS - 1]
+#define USED_MOTOR_TYPE    DC      // Define the type of motor used for windows movement      
 
- #define PASSENGER2_UP_PORT             PORTB_ID
- #define PASSENGER2_UP_PIN              PIN0_ID
- #define PASSENGER2_DOWN_PORT           PORTB_ID
- #define PASSENGER2_DOWN_PIN            PIN0_ID
- #define PASSENGER2_ONE_TOUCH_PORT      PORTB_ID
- #define PASSENGER2_ONE_TOUCH_PIN       PIN0_ID
- #define PASSENGER2_TOP_LIMIT_PORT      PORTB_ID
- #define PASSENGER2_TOP_LIMIT_PIN       PIN0_ID
- #define PASSENGER2_BOTTOM_LIMIT_PORT   PORTB_ID
- #define PASSENGER2_BOTTOM_LIMIT_PIN    PIN0_ID
- #define PASSENGER2_JAM_PORT            PORTA_ID
- #define PASSENGER2_JAM_PIN             PIN0_ID
- 
- #define PASSENGER3_UP_PORT             PORTB_ID
- #define PASSENGER3_UP_PIN              PIN0_ID
- #define PASSENGER3_DOWN_PORT           PORTB_ID
- #define PASSENGER3_DOWN_PIN            PIN0_ID
- #define PASSENGER3_ONE_TOUCH_PORT      PORTB_ID
- #define PASSENGER3_ONE_TOUCH_PIN       PIN0_ID
- #define PASSENGER3_TOP_LIMIT_PORT      PORTB_ID
- #define PASSENGER3_TOP_LIMIT_PIN       PIN0_ID
- #define PASSENGER3_BOTTOM_LIMIT_PORT   PORTB_ID
- #define PASSENGER3_BOTTOM_LIMIT_PIN    PIN0_ID
- #define PASSENGER3_JAM_PORT            PORTA_ID
- #define PASSENGER3_JAM_PIN             PIN0_ID
+/*=============== OPERATIONAL MACROS ================*/
+#define SWITCH_ON            LOGIC_LOW
+#define SWITCH_OFF           LOGIC_HIGH
+#define UP                   ANTICLOCKWISE
+#define DOWN                 CLOCKWISE
+#define IS_ON(port, pin)    (DIO_readPin(port, pin) == SWITCH_ON)
+#define IS_OFF(port, pin)   (DIO_readPin(port, pin) == SWITCH_OFF)
 
- #endif
+/*=============== DRIVER ================*/
+// Driver UP Button
+#define DRIVER_UP_PORT                 PORTB_ID
+#define DRIVER_UP_PIN                  PIN0_ID
+// Driver DOWN Button
+#define DRIVER_DOWN_PORT               PORTB_ID
+#define DRIVER_DOWN_PIN                PIN0_ID
+// Driver Control for passenger1
+#define DRIVER_PASSENGER1_UP_PORT       PORTB_ID
+#define DRIVER_PASSENGER1_UP_PIN        PIN0_ID
+#define DRIVER_PASSENGER1_DOWN_PORT     PORTB_ID
+#define DRIVER_PASSENGER1_DOWN_PIN      PIN0_ID
 
- /*=============== Operation Abstraction ================*/
- #define SWITCH_ON            LOGIC_LOW
- #define SWITCH_OFF           LOGIC_HIGH
- #define UP                   ANTICLOCKWISE
- #define DOWN                 CLOCKWISE
- #define IS_ON(port, pin)    (DIO_readPin(port, pin) == SWITCH_ON)
- #define IS_OFF(port, pin)   (DIO_readPin(port, pin) == SWITCH_OFF)
+#if (NUM_OF_WINDOWS == 4)
+// Driver Control for passenger2
+#define DRIVER_PASSENGER2_UP_PORT       PORTB_ID
+#define DRIVER_PASSENGER2_UP_PIN        PIN0_ID
+#define DRIVER_PASSENGER2_DOWN_PORT     PORTB_ID
+#define DRIVER_PASSENGER2_DOWN_PIN      PIN0_ID
+// Driver Control for passenger3
+#define DRIVER_PASSENGER3_UP_PORT       PORTB_ID
+#define DRIVER_PASSENGER3_UP_PIN        PIN0_ID
+#define DRIVER_PASSENGER3_DOWN_PORT     PORTB_ID
+#define DRIVER_PASSENGER3_DOWN_PIN      PIN0_ID
+#endif
+// Driver Lock Button
+#define DRIVER_LOCK_PORT               PORTD_ID
+#define DRIVER_LOCK_PIN                PIN0_ID
+// Driver Top Limit Switch
+#define DRIVER_TOP_LIMIT_PORT          PORTB_ID
+#define DRIVER_TOP_LIMIT_PIN           PIN0_ID
+// Driver Bottom Limit Switch
+#define DRIVER_BOTTOM_LIMIT_PORT       PORTB_ID
+#define DRIVER_BOTTOM_LIMIT_PIN        PIN0_ID
+// Driver Jam Sensor 
+#define DRIVER_JAM_PORT                PORTA_ID
+#define DRIVER_JAM_PIN                 PIN0_ID
+
+/*=============== PASSENGER 1 ================*/
+// Passenger UP Button
+#define PASSENGER1_UP_PORT             PORTB_ID
+#define PASSENGER1_UP_PIN              PIN0_ID
+// Passenger DOWN Button
+#define PASSENGER1_DOWN_PORT           PORTB_ID
+#define PASSENGER1_DOWN_PIN            PIN0_ID
+// Passenger Top Limit Switch
+#define PASSENGER1_TOP_LIMIT_PORT      PORTB_ID
+#define PASSENGER1_TOP_LIMIT_PIN       PIN0_ID
+// Passenger Bottom Limit Switch
+#define PASSENGER1_BOTTOM_LIMIT_PORT   PORTB_ID
+#define PASSENGER1_BOTTOM_LIMIT_PIN    PIN0_ID
+// Passenger Jam Sensor
+#define PASSENGER1_JAM_PORT            PORTA_ID
+#define PASSENGER1_JAM_PIN             PIN0_ID
+
+#if (NUM_OF_WINDOWS == 4)
+/*=============== PASSENGER 2 ================*/
+
+// Passenger UP Button
+#define PASSENGER2_UP_PORT             PORTB_ID
+#define PASSENGER2_UP_PIN              PIN0_ID
+// Passenger DOWN Button
+#define PASSENGER2_DOWN_PORT           PORTB_ID
+#define PASSENGER2_DOWN_PIN            PIN0_ID
+// Passenger Top Limit Switch
+#define PASSENGER2_TOP_LIMIT_PORT      PORTB_ID
+#define PASSENGER2_TOP_LIMIT_PIN       PIN0_ID
+// Passenger Bottom Limit Switch
+#define PASSENGER2_BOTTOM_LIMIT_PORT   PORTB_ID
+#define PASSENGER2_BOTTOM_LIMIT_PIN    PIN0_ID
+// Passenger Jam Sensor
+#define PASSENGER2_JAM_PORT            PORTA_ID
+#define PASSENGER2_JAM_PIN             PIN0_ID
+
+/*=============== PASSENGER 3 ================*/
+
+// Passenger UP Button
+#define PASSENGER3_UP_PORT             PORTB_ID
+#define PASSENGER3_UP_PIN              PIN0_ID
+// Passenger DOWN Button
+#define PASSENGER3_DOWN_PORT           PORTB_ID
+#define PASSENGER3_DOWN_PIN            PIN0_ID
+// Passenger Top Limit Switch
+#define PASSENGER3_TOP_LIMIT_PORT      PORTB_ID
+#define PASSENGER3_TOP_LIMIT_PIN       PIN0_ID
+// Passenger Bottom Limit Switch
+#define PASSENGER3_BOTTOM_LIMIT_PORT   PORTB_ID
+#define PASSENGER3_BOTTOM_LIMIT_PIN    PIN0_ID
+// Passenger Jam Sensor
+#define PASSENGER3_JAM_PORT            PORTA_ID
+#define PASSENGER3_JAM_PIN             PIN0_ID
+
+#endif
+
 
 /******************************************
  * 			 TYPES DEFINITIONS
@@ -111,34 +149,43 @@ typedef enum{
    top_limit_port, top_limit_pin:          Input GPIO coming from limit switches placed on the top of the window frame
    bottom_limit_port, bottom_limit_pin:    Input GPIO coming from limit switches placed on the bottom of the window frame
 */
- typedef struct{
-    Window_ID id;
-    uint8 up_port;
-    uint8 up_pin;
-    uint8 down_port;
-    uint8 down_pin;
-    uint8 auto_port;
-    uint8 auto_pin;
-    uint8 top_limit_port;
-    uint8 top_limit_pin;
-    uint8 bottom_limit_port;
-    uint8 bottom_limit_pin;
-    uint8 jam_port;
-    uint8 jam_pin;
- }Window_type;
+typedef struct{
+   Window_ID id;
+   // Up button
+   uint8 up_port;
+   uint8 up_pin;
+   // Down Button
+   uint8 down_port;
+   uint8 down_pin;
+   // Top Limit Switch
+   uint8 top_limit_port;
+   uint8 top_limit_pin;
+   // Bottom Limit Switch
+   uint8 bottom_limit_port;
+   uint8 bottom_limit_pin;
+   // Jam Sensor
+   uint8 jam_port;
+   uint8 jam_pin;
+}Window_type;
 
 /******************************************
  * 			FUNCTION PROTOTYPES
  ******************************************/
- /*
- Function to initialize necessary pins and modules for the power windows
- */
- void WINDOW_init(void);
+/*
+Function to initialize necessary pins and modules for the power windows
+*/
+void WINDOW_init(void);
 
- /*
- Generic Task definition for power window 
- --- FreeRTOS specific definition
- */
- void WINDOW_Task(void* pvParameter);
+/*
+Specific Task for handling Driver Commands
+--- FreeRTOS specific definition
+*/
+void WINDOW_DriverTask(void* pvParameter);
+
+/*
+Generic Task definition for power window 
+--- FreeRTOS specific definition
+*/
+void WINDOW_PassengerTask(void* pvParameter);
 
 #endif

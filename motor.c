@@ -10,35 +10,23 @@
  // Such reduction is necessary to avoid unnecessary usage of timers and PWM controls
  // Ensure jumper is placed on the Enable pins to allow max speed operation
 
- /****** PWM control can be added in future implementations calling for variable speed ******/
-
+/****** PWM control can be added in future implementations calling for variable speed ******/
 
 #include "motor.h"
-#include "DIO.h"
 
 
 /*
  * This function initializes the DC motors by setting up the direction and state of the motor pins.
  * It also ensures that all the motor pins are initially set to the off state.
  */
-void DcMotor_init(void){
-	/* setup direction of the first motor pins to be OUTPUT */
-	DIO_Init(MOTOR1_EN_PORT, MOTOR1_EN_PIN, PIN_OUTPUT);
-	DIO_Init(MOTOR1_IN1_PORT, MOTOR1_IN1_PIN, PIN_OUTPUT);
-	DIO_Init(MOTOR1_IN2_PORT, MOTOR1_IN2_PIN, PIN_OUTPUT);
-
-	/* setup direction of the second motor pins to be OUTPUT */
-	DIO_Init(MOTOR2_EN_PORT, MOTOR2_EN_PIN, PIN_OUTPUT);
-	DIO_Init(MOTOR2_IN1_PORT, MOTOR2_IN1_PIN, PIN_OUTPUT);
-	DIO_Init(MOTOR2_IN2_PORT, MOTOR2_IN2_PIN, PIN_OUTPUT);
-
-	/* Initializing all pins to be off */
-	DIO_writePin(MOTOR1_EN_PORT, MOTOR1_EN_PIN, LOGIC_LOW);
-	DIO_writePin(MOTOR1_IN1_PORT, MOTOR1_IN1_PIN, LOGIC_LOW);
-	DIO_writePin(MOTOR1_IN2_PORT, MOTOR1_IN2_PIN, LOGIC_LOW);
-	DIO_writePin(MOTOR2_EN_PORT, MOTOR2_EN_PIN, LOGIC_LOW);
-	DIO_writePin(MOTOR2_IN1_PORT, MOTOR2_IN1_PIN, LOGIC_LOW);
-	DIO_writePin(MOTOR2_IN2_PORT, MOTOR2_IN2_PIN, LOGIC_LOW);
+void Motor_init(void){
+	INITIALIZE_MOTOR(1);
+	INITIALIZE_MOTOR(2);
+	
+	#if (NUM_OF_MOTORS == 4)
+	INITIALIZE_MOTOR(3);
+	INITIALIZE_MOTOR(4);
+	#endif
 }
 
 /*
@@ -47,33 +35,70 @@ void DcMotor_init(void){
  * The motor ID can be either MOTOR1 or MOTOR2.
  * The direction can be OFF, ANTICLOCKWISE, or CLOCKWISE.
  */
-void DcMotor_Rotate(DcMotor_ID motor, DcMotor_Direction direction){
-	if (motor == MOTOR1){
-		if (direction == OFF){
-			DIO_writePin(MOTOR1_IN1_PORT, MOTOR1_IN1_PIN, LOGIC_LOW);
-			DIO_writePin(MOTOR1_IN2_PORT, MOTOR1_IN2_PIN, LOGIC_LOW);
-		}
-		else if (direction == ANTICLOCKWISE){
-			DIO_writePin(MOTOR1_IN1_PORT, MOTOR1_IN1_PIN, LOGIC_LOW);
-			DIO_writePin(MOTOR1_IN2_PORT, MOTOR1_IN2_PIN, LOGIC_HIGH);
-		}
-		else if (direction == CLOCKWISE){
-			DIO_writePin(MOTOR1_IN1_PORT, MOTOR1_IN1_PIN, LOGIC_HIGH);
-			DIO_writePin(MOTOR1_IN2_PORT, MOTOR1_IN2_PIN, LOGIC_LOW);
-		}
-	}
-	else if (motor == MOTOR2){
-		if (direction == OFF){
-			DIO_writePin(MOTOR2_IN1_PORT, MOTOR2_IN1_PIN, LOGIC_LOW);
-			DIO_writePin(MOTOR2_IN2_PORT, MOTOR2_IN2_PIN, LOGIC_LOW);
-		}
-		else if (direction == ANTICLOCKWISE){
-			DIO_writePin(MOTOR2_IN1_PORT, MOTOR2_IN1_PIN, LOGIC_LOW);
-			DIO_writePin(MOTOR2_IN2_PORT, MOTOR2_IN2_PIN, LOGIC_HIGH);
-		}
-		else if (direction == CLOCKWISE){
-			DIO_writePin(MOTOR2_IN1_PORT, MOTOR2_IN1_PIN, LOGIC_HIGH);
-			DIO_writePin(MOTOR2_IN2_PORT, MOTOR2_IN2_PIN, LOGIC_LOW);
-		}
+void Motor_Rotate(Motor_ID motor, Motor_Direction direction){
+	switch(motor){
+		case MOTOR1:
+			if (direction == OFF){
+				DIO_writePin(MOTOR1_IN1_PORT, MOTOR1_IN1_PIN, LOGIC_LOW);
+				DIO_writePin(MOTOR1_IN2_PORT, MOTOR1_IN2_PIN, LOGIC_LOW);
+			}
+			else if (direction == ANTICLOCKWISE){
+				DIO_writePin(MOTOR1_IN1_PORT, MOTOR1_IN1_PIN, LOGIC_LOW);
+				DIO_writePin(MOTOR1_IN2_PORT, MOTOR1_IN2_PIN, LOGIC_HIGH);
+			}
+			else if (direction == CLOCKWISE){
+				DIO_writePin(MOTOR1_IN1_PORT, MOTOR1_IN1_PIN, LOGIC_HIGH);
+				DIO_writePin(MOTOR1_IN2_PORT, MOTOR1_IN2_PIN, LOGIC_LOW);
+			}
+		break;
+
+		case MOTOR2:
+			if (direction == OFF){
+				DIO_writePin(MOTOR2_IN1_PORT, MOTOR2_IN1_PIN, LOGIC_LOW);
+				DIO_writePin(MOTOR2_IN2_PORT, MOTOR2_IN2_PIN, LOGIC_LOW);
+			}
+			else if (direction == ANTICLOCKWISE){
+				DIO_writePin(MOTOR2_IN1_PORT, MOTOR2_IN1_PIN, LOGIC_LOW);
+				DIO_writePin(MOTOR2_IN2_PORT, MOTOR2_IN2_PIN, LOGIC_HIGH);
+			}
+			else if (direction == CLOCKWISE){
+				DIO_writePin(MOTOR2_IN1_PORT, MOTOR2_IN1_PIN, LOGIC_HIGH);
+				DIO_writePin(MOTOR2_IN2_PORT, MOTOR2_IN2_PIN, LOGIC_LOW);
+			}
+		break;
+
+		#if (NUM_OF_MOTORS == 4)
+		case MOTOR3:
+			if (direction == OFF){
+				DIO_writePin(MOTOR3_IN1_PORT, MOTOR3_IN1_PIN, LOGIC_LOW);
+				DIO_writePin(MOTOR3_IN2_PORT, MOTOR3_IN2_PIN, LOGIC_LOW);
+			}
+			else if (direction == ANTICLOCKWISE){
+				DIO_writePin(MOTOR3_IN1_PORT, MOTOR3_IN1_PIN, LOGIC_LOW);
+				DIO_writePin(MOTOR3_IN2_PORT, MOTOR3_IN2_PIN, LOGIC_HIGH);
+			}
+			else if (direction == CLOCKWISE){
+				DIO_writePin(MOTOR3_IN1_PORT, MOTOR3_IN1_PIN, LOGIC_HIGH);
+				DIO_writePin(MOTOR3_IN2_PORT, MOTOR3_IN2_PIN, LOGIC_LOW);
+			}
+		break;
+
+		case MOTOR4:
+			if (direction == OFF){
+				DIO_writePin(MOTOR4_IN1_PORT, MOTOR4_IN1_PIN, LOGIC_LOW);
+				DIO_writePin(MOTOR4_IN2_PORT, MOTOR4_IN2_PIN, LOGIC_LOW);
+			}
+			else if (direction == ANTICLOCKWISE){
+				DIO_writePin(MOTOR4_IN1_PORT, MOTOR4_IN1_PIN, LOGIC_LOW);
+				DIO_writePin(MOTOR4_IN2_PORT, MOTOR4_IN2_PIN, LOGIC_HIGH);
+			}
+			else if (direction == CLOCKWISE){
+				DIO_writePin(MOTOR4_IN1_PORT, MOTOR4_IN1_PIN, LOGIC_HIGH);
+				DIO_writePin(MOTOR4_IN2_PORT, MOTOR4_IN2_PIN, LOGIC_LOW);
+			}
+		break;
+
+		#endif 
+
 	}
 }

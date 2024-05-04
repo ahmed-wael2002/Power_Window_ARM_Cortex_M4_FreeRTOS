@@ -16,7 +16,7 @@ int main( void )
 	for (uint8 i=0; i<NUM_OF_WINDOWS; i++){
 			/******* Generic Task Creation for windows *******/
 			xTaskCreate(
-					WINDOW_Task,					// Task Function
+					WINDOW_PassengerTask,					// Task Function
 					"Window Task",				// Debugging Task Name
 					120,									// Stack Depth
 					(void *)&windows[i],	// Parameters are stored as an array of structs holding parameters
@@ -26,7 +26,6 @@ int main( void )
 	}
 
 }
-
 
 
 /* Idle hook functions MUST be called vApplicationIdleHook(), take no parameters,
