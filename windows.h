@@ -23,7 +23,6 @@ This is the header file for the application layer of Power Windows Application
  /*=============== SYSTEM STATIC CONFIGURATIONS ================*/
 
 #define NUM_OF_WINDOWS     2       // Define the number of windows in the system (4: Sedan - 2: Coupe)
-#define DRIVER_LOCATION    0       // Define the driver seat with the location (UK standard - UN standard) [0-NUM_OF_WINDOWS - 1]
 #define USED_MOTOR_TYPE    DC      // Define the type of motor used for windows movement      
 
 /*=============== OPERATIONAL MACROS ================*/
@@ -36,16 +35,16 @@ This is the header file for the application layer of Power Windows Application
 
 /*=============== DRIVER ================*/
 // Driver UP Button
-#define DRIVER_UP_PORT                 PORTB_ID
-#define DRIVER_UP_PIN                  PIN0_ID
+#define DRIVER_UP_PORT                 	PORTE_ID
+#define DRIVER_UP_PIN                  	PIN5_ID
 // Driver DOWN Button
-#define DRIVER_DOWN_PORT               PORTB_ID
-#define DRIVER_DOWN_PIN                PIN0_ID
+#define DRIVER_DOWN_PORT               	PORTE_ID
+#define DRIVER_DOWN_PIN                 PIN4_ID
 // Driver Control for passenger1
-#define DRIVER_PASSENGER1_UP_PORT       PORTB_ID
-#define DRIVER_PASSENGER1_UP_PIN        PIN0_ID
+#define DRIVER_PASSENGER1_UP_PORT       PORTA_ID
+#define DRIVER_PASSENGER1_UP_PIN        PIN5_ID
 #define DRIVER_PASSENGER1_DOWN_PORT     PORTB_ID
-#define DRIVER_PASSENGER1_DOWN_PIN      PIN0_ID
+#define DRIVER_PASSENGER1_DOWN_PIN      PIN4_ID
 
 #if (NUM_OF_WINDOWS == 4)
 // Driver Control for passenger2
@@ -60,34 +59,34 @@ This is the header file for the application layer of Power Windows Application
 #define DRIVER_PASSENGER3_DOWN_PIN      PIN0_ID
 #endif
 // Driver Lock Button
-#define DRIVER_LOCK_PORT               PORTD_ID
-#define DRIVER_LOCK_PIN                PIN0_ID
+#define DRIVER_LOCK_PORT                PORTF_ID
+#define DRIVER_LOCK_PIN                 PIN0_ID
 // Driver Top Limit Switch
-#define DRIVER_TOP_LIMIT_PORT          PORTB_ID
-#define DRIVER_TOP_LIMIT_PIN           PIN0_ID
+#define DRIVER_TOP_LIMIT_PORT           PORTA_ID
+#define DRIVER_TOP_LIMIT_PIN            PIN6_ID
 // Driver Bottom Limit Switch
-#define DRIVER_BOTTOM_LIMIT_PORT       PORTB_ID
-#define DRIVER_BOTTOM_LIMIT_PIN        PIN0_ID
+#define DRIVER_BOTTOM_LIMIT_PORT        PORTA_ID
+#define DRIVER_BOTTOM_LIMIT_PIN         PIN5_ID
 // Driver Jam Sensor 
-#define DRIVER_JAM_PORT                PORTA_ID
-#define DRIVER_JAM_PIN                 PIN0_ID
+#define DRIVER_JAM_PORT                 PORTB_ID
+#define DRIVER_JAM_PIN                  PIN4_ID
 
 /*=============== PASSENGER 1 ================*/
 // Passenger UP Button
-#define PASSENGER1_UP_PORT             PORTB_ID
-#define PASSENGER1_UP_PIN              PIN0_ID
+#define PASSENGER1_UP_PORT             PORTD_ID
+#define PASSENGER1_UP_PIN              PIN7_ID
 // Passenger DOWN Button
-#define PASSENGER1_DOWN_PORT           PORTB_ID
-#define PASSENGER1_DOWN_PIN            PIN0_ID
+#define PASSENGER1_DOWN_PORT           PORTD_ID
+#define PASSENGER1_DOWN_PIN            PIN6_ID
 // Passenger Top Limit Switch
-#define PASSENGER1_TOP_LIMIT_PORT      PORTB_ID
-#define PASSENGER1_TOP_LIMIT_PIN       PIN0_ID
+#define PASSENGER1_TOP_LIMIT_PORT      PORTC_ID
+#define PASSENGER1_TOP_LIMIT_PIN       PIN7_ID
 // Passenger Bottom Limit Switch
-#define PASSENGER1_BOTTOM_LIMIT_PORT   PORTB_ID
-#define PASSENGER1_BOTTOM_LIMIT_PIN    PIN0_ID
+#define PASSENGER1_BOTTOM_LIMIT_PORT   PORTC_ID
+#define PASSENGER1_BOTTOM_LIMIT_PIN    PIN6_ID
 // Passenger Jam Sensor
-#define PASSENGER1_JAM_PORT            PORTA_ID
-#define PASSENGER1_JAM_PIN             PIN0_ID
+#define PASSENGER1_JAM_PORT            PORTC_ID
+#define PASSENGER1_JAM_PIN             PIN5_ID
 
 #if (NUM_OF_WINDOWS == 4)
 /*=============== PASSENGER 2 ================*/

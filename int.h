@@ -18,7 +18,7 @@
 #define PORTE_ID        4
 #define PORTF_ID        5
 
-#define INTERRUPT_PRIORITY_LEVEL 0x3
+#define INTERRUPT_PRIORITY_LEVEL 0x0
 
 
 // Function to initialize the interrupt 

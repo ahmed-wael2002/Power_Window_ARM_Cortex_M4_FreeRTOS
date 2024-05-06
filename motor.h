@@ -26,15 +26,12 @@ The driver module is controlled by 3 pins:
  *************************************************************************************************************/
 
 /*=============== SYSTEM STATIC CONFIGURATIONS ================*/
-#define NUM_OF_MOTORS		4
+#define NUM_OF_MOTORS		2
 #define TYPE_OF_MOTORS		DC
 
 
 /*=============== OPERATIONAL MACROS ================*/
-#define INITIALIZE_MOTOR(number)	DIO_Init(MOTOR##number##_EN_PORT, MOTOR##number##_EN_PIN, PIN_INPUT);\
-DIO_Init(MOTOR##number##_IN1_PORT, MOTOR##number##_IN1_PIN, PIN_INPUT);\
-DIO_writePin(MOTOR##number##_EN_PORT, MOTOR##number##_EN_PIN, LOGIC_LOW);\
-DIO_writePin(MOTOR##number##_IN1_PORT, MOTOR##number##_IN1_PIN, LOGIC_LOW);\
+
 
 
 
@@ -47,21 +44,22 @@ DIO_writePin(MOTOR##number##_IN1_PORT, MOTOR##number##_IN1_PIN, LOGIC_LOW);\
  */
 
 // Controlling First Motor
-#define MOTOR1_EN_PORT 		PORTB_ID
-#define MOTOR1_EN_PIN 		PIN3_ID
-#define MOTOR1_IN1_PORT 	PORTB_ID
-#define MOTOR1_IN1_PIN 		PIN0_ID
-#define MOTOR1_IN2_PORT 	PORTB_ID
-#define MOTOR1_IN2_PIN 		PIN1_ID
+#define MOTOR1_EN_PORT 		PORTA_ID
+#define MOTOR1_EN_PIN 		PIN4_ID
+#define MOTOR1_IN1_PORT 	PORTA_ID
+#define MOTOR1_IN1_PIN 		PIN2_ID
+#define MOTOR1_IN2_PORT 	PORTA_ID
+#define MOTOR1_IN2_PIN 		PIN3_ID
 
 // Controlling Second Motor
-#define MOTOR2_EN_PORT 		PORTB_ID
-#define MOTOR2_EN_PIN 		PIN4_ID
-#define MOTOR2_IN1_PORT		PORTD_ID
-#define MOTOR2_IN1_PIN		PIN0_ID
-#define MOTOR2_IN2_PORT		PORTD_ID
-#define MOTOR2_IN2_PIN		PIN1_ID
+#define MOTOR2_EN_PORT 		PORTD_ID
+#define MOTOR2_EN_PIN 		PIN6_ID
+#define MOTOR2_IN1_PORT		PORTA_ID
+#define MOTOR2_IN1_PIN		PIN4_ID
+#define MOTOR2_IN2_PORT		PORTB_ID
+#define MOTOR2_IN2_PIN		PIN6_ID
 
+#if (NUM_OF_MOTORS == 4)
 // Controlling Third Motor
 #define MOTOR3_EN_PORT 		PORTB_ID
 #define MOTOR3_EN_PIN 		PIN3_ID
@@ -77,6 +75,7 @@ DIO_writePin(MOTOR##number##_IN1_PORT, MOTOR##number##_IN1_PIN, LOGIC_LOW);\
 #define MOTOR4_IN1_PIN		PIN0_ID
 #define MOTOR4_IN2_PORT		PORTD_ID
 #define MOTOR4_IN2_PIN		PIN1_ID
+#endif
 
 /******************************************
  * 			 TYPES DEFINITIONS
