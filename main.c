@@ -10,14 +10,17 @@
 #include "semphr.h"
 
 extern Window_type windows[NUM_OF_WINDOWS];
-
+extern QueueHandle_t xCommandQueue;
 
 int main( void )
 {
-	
-	WINDOW_init();	
-	
+	// Initializing Windows GPIO 
+	WINDOW_init();
+	// Initializing commands queue	
+	xCommandQueue = xQueueCreate(20, sizeof(uint8_t));
+
 	for (uint8 i=0; i<NUM_OF_WINDOWS; i++){	
+		// Create Passenger Task (PASSENGER1, PASSENGER2, PASSENGER3	
 		xTaskCreate(
 			WINDOW_PassengerTask,	
 			"Window Task",				
@@ -25,12 +28,19 @@ int main( void )
 			(void *)&windows[i],	
 			1, 									
 			NULL								
-		);	
+		);
 	}
+
+	xTaskCreate(
+		WINDOW_MotorTask,	
+		"Window Task",				
+		300,									
+		NULL,	
+		1, 									
+		NULL								
+	);	
 		
-	vTaskStartScheduler();
-	
-	
+	vTaskStartScheduler();	
 }
 
 

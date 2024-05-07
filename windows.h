@@ -33,6 +33,28 @@ This is the header file for the application layer of Power Windows Application
 #define IS_ON(port, pin)    (DIO_readPin(port, pin) == SWITCH_ON)
 #define IS_OFF(port, pin)   (DIO_readPin(port, pin) == SWITCH_OFF)
 
+/*=============== COMMANDS MACROS ================*/
+#define MOVE_UP_CMD                     1
+#define MOVE_DOWN_CMD                   2
+#define STOP_CMD                        3
+
+// Passenger 1 commands
+#define PASSENGER1_MOVE_UP              11
+#define PASSENGER1_MOVE_DOWN            12
+#define PASSENGER1_STOP                 13
+// Passenger 2 commands
+#define PASSENGER2_MOVE_UP              21
+#define PASSENGER2_MOVE_DOWN            22
+#define PASSENGER2_STOP                 23
+
+#if (NUM_OF_WINDOWS == 4)
+// Passenger 3 commands
+#define PASSENGER3_MOVE_UP              31
+#define PASSENGER3_MOVE_DOWN            32
+#define PASSENGER3_STOP                 33
+#endif
+
+
 /*=============== DRIVER ================*/
 // Driver UP Button
 #define DRIVER_UP_PORT                 	PORTE_ID
@@ -41,10 +63,10 @@ This is the header file for the application layer of Power Windows Application
 #define DRIVER_DOWN_PORT               	PORTE_ID
 #define DRIVER_DOWN_PIN                 PIN4_ID
 // Driver Control for passenger1
-#define DRIVER_PASSENGER1_UP_PORT       PORTA_ID
-#define DRIVER_PASSENGER1_UP_PIN        PIN5_ID
+#define DRIVER_PASSENGER1_UP_PORT       PORTB_ID
+#define DRIVER_PASSENGER1_UP_PIN        PIN1_ID
 #define DRIVER_PASSENGER1_DOWN_PORT     PORTB_ID
-#define DRIVER_PASSENGER1_DOWN_PIN      PIN4_ID
+#define DRIVER_PASSENGER1_DOWN_PIN      PIN0_ID
 
 #if (NUM_OF_WINDOWS == 4)
 // Driver Control for passenger2
@@ -153,9 +175,15 @@ typedef struct{
    // Up button
    uint8 up_port;
    uint8 up_pin;
+   // driver up button
+   uint8 driver_up_port;
+   uint8 driver_up_pin;
    // Down Button
    uint8 down_port;
    uint8 down_pin;
+   // driver down button
+   uint8 driver_down_port;
+   uint8 driver_down_pin;
    // Top Limit Switch
    uint8 top_limit_port;
    uint8 top_limit_pin;
@@ -186,5 +214,8 @@ Generic Task definition for power window
 --- FreeRTOS specific definition
 */
 void WINDOW_PassengerTask(void* pvParameter);
+
+void WINDOW_MotorTask(void* pvParameters);
+
 
 #endif

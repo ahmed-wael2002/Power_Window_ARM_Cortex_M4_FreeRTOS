@@ -5,7 +5,6 @@
 /*===============================================================================*/
 /*                         FUNCTION DEFINITIONS                                  */
 /*===============================================================================*/
-void GPIOD_Handler(void);
 
 /* Function to initialize Magnet Pin */
 void INT_init(uint8 portNumber, uint8 pinNumber)
@@ -151,5 +150,3 @@ void GPIOF_Handler(void)
         GPIO_PORTF_ICR_R = 0xFF;
     }
 }
-
-
