@@ -32,6 +32,7 @@ This is the header file for the application layer of Power Windows Application
 #define DOWN                 CLOCKWISE
 #define IS_ON(port, pin)    (DIO_readPin(port, pin) == SWITCH_ON)
 #define IS_OFF(port, pin)   (DIO_readPin(port, pin) == SWITCH_OFF)
+#define JAM_DELAY_MS         100000
 
 /*=============== COMMANDS MACROS ================*/
 #define MOVE_UP_CMD                     1
@@ -58,10 +59,10 @@ This is the header file for the application layer of Power Windows Application
 /*=============== DRIVER ================*/
 // Driver UP Button
 #define DRIVER_UP_PORT                 	PORTE_ID
-#define DRIVER_UP_PIN                  	PIN5_ID
+#define DRIVER_UP_PIN                  	PIN4_ID
 // Driver DOWN Button
 #define DRIVER_DOWN_PORT               	PORTE_ID
-#define DRIVER_DOWN_PIN                 PIN4_ID
+#define DRIVER_DOWN_PIN                 PIN5_ID
 // Driver Control for passenger1
 #define DRIVER_PASSENGER1_UP_PORT       PORTB_ID
 #define DRIVER_PASSENGER1_UP_PIN        PIN1_ID
@@ -81,8 +82,8 @@ This is the header file for the application layer of Power Windows Application
 #define DRIVER_PASSENGER3_DOWN_PIN      PIN0_ID
 #endif
 // Driver Lock Button
-#define DRIVER_LOCK_PORT                PORTF_ID
-#define DRIVER_LOCK_PIN                 PIN0_ID
+#define DRIVER_LOCK_PORT                PORTB_ID
+#define DRIVER_LOCK_PIN                 PIN3_ID
 // Driver Top Limit Switch
 #define DRIVER_TOP_LIMIT_PORT           PORTA_ID
 #define DRIVER_TOP_LIMIT_PIN            PIN6_ID
@@ -90,8 +91,8 @@ This is the header file for the application layer of Power Windows Application
 #define DRIVER_BOTTOM_LIMIT_PORT        PORTA_ID
 #define DRIVER_BOTTOM_LIMIT_PIN         PIN5_ID
 // Driver Jam Sensor 
-#define DRIVER_JAM_PORT                 PORTB_ID
-#define DRIVER_JAM_PIN                  PIN4_ID
+#define DRIVER_JAM_PORT                 PORTE_ID
+#define DRIVER_JAM_PIN                  PIN2_ID
 
 /*=============== PASSENGER 1 ================*/
 // Passenger UP Button
@@ -107,8 +108,8 @@ This is the header file for the application layer of Power Windows Application
 #define PASSENGER1_BOTTOM_LIMIT_PORT   PORTC_ID
 #define PASSENGER1_BOTTOM_LIMIT_PIN    PIN6_ID
 // Passenger Jam Sensor
-#define PASSENGER1_JAM_PORT            PORTC_ID
-#define PASSENGER1_JAM_PIN             PIN5_ID
+#define PASSENGER1_JAM_PORT            PORTE_ID
+#define PASSENGER1_JAM_PIN             PIN3_ID
 
 #if (NUM_OF_WINDOWS == 4)
 /*=============== PASSENGER 2 ================*/
@@ -193,6 +194,9 @@ typedef struct{
    // Jam Sensor
    uint8 jam_port;
    uint8 jam_pin;
+   // Flags
+   uint8 auto_flag;
+   uint8 jam_flag;
 }Window_type;
 
 /******************************************
@@ -204,18 +208,18 @@ Function to initialize necessary pins and modules for the power windows
 void WINDOW_init(void);
 
 /*
-Specific Task for handling Driver Commands
---- FreeRTOS specific definition
-*/
-void WINDOW_DriverTask(void* pvParameter);
-
-/*
 Generic Task definition for power window 
 --- FreeRTOS specific definition
 */
 void WINDOW_PassengerTask(void* pvParameter);
 
+/*
+Task Definition for motor control and handling  
+--- FreeRTOS specific definition
+*/
 void WINDOW_MotorTask(void* pvParameters);
 
+
+void WINDOW_JammingSemaphoreTask(void* pvParameters);
 
 #endif

@@ -27,4 +27,10 @@ void INT_init(uint8 portNumber, uint8 pinNumber);
 // Function to set the callback function
 void INT_setCallBack(uint8 portNumber, void(*a_ptr)(void));
 
+// Function to check if the parameterized interrupt is set
+boolean INT_isInterruptSet(uint8 portNumber, uint8 pinNumber);
+
+// Function to clear interrupt based on the given interrupt number
+void INT_clearInterrupt(uint8 portNumber, uint8 pinNumber);
+
 

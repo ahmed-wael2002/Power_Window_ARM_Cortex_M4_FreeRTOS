@@ -8,6 +8,7 @@
 #include "task.h"
 #include "semphr.h"
 #include "queue.h"
+#include "tm4c123gh6pm.h"
 
 
 /*************************************************************************************************************
@@ -16,6 +17,7 @@
 static volatile uint8 g_isLocked = 0;
 Window_type windows[NUM_OF_WINDOWS];
 QueueHandle_t xCommandQueue;
+xSemaphoreHandle xBinarySemaphore;
 
 
 /*************************************************************************************************************
@@ -27,6 +29,37 @@ QueueHandle_t xCommandQueue;
 void WINDOW_LockToggle(void){
 	// Toggle Lock function
 	g_isLocked ^= 1;
+    INT_clearInterrupt(DRIVER_LOCK_PORT, DRIVER_LOCK_PIN);
+}
+
+void WINDOW_JamISR(void){
+  portBASE_TYPE xHigherPriorityTaskWoken = pdFALSE;
+  xSemaphoreGiveFromISR(xBinarySemaphore, &xHigherPriorityTaskWoken);
+  // Detect which interrupt is fired then clear the flag
+  for (uint8 i=0; i<NUM_OF_WINDOWS; i++){
+      if(INT_isInterruptSet(windows[i].jam_port, windows[i].jam_pin)){
+          windows[i].jam_flag = 1;
+          INT_clearInterrupt(windows[i].jam_port, windows[i].jam_pin);
+      }
+  }
+  portEND_SWITCHING_ISR(xHigherPriorityTaskWoken);
+}
+
+
+void WINDOW_JammingSemaphoreTask(void* pvParameters){
+  xSemaphoreTake(xBinarySemaphore,0);
+  uint8 cmd;
+  while(1){
+      xSemaphoreTake(xBinarySemaphore,portMAX_DELAY);
+      for(uint8 i=0; i<NUM_OF_WINDOWS;i++){
+          if((windows[i].auto_flag == 1) && (windows[i].jam_flag == 1)){
+              Motor_Rotate(i, DOWN);
+              for(uint32 delay=0; ((delay<JAM_DELAY_MS)&&(IS_OFF(windows[i].bottom_limit_port, windows[i].bottom_limit_pin))); delay++);
+              windows[i].auto_flag = 0;
+              windows[i].jam_flag = 0;
+          }
+      }
+  }
 }
 
 /*
@@ -37,8 +70,8 @@ void WINDOW_init(void){
     Motor_init();
 
     /*============================ DRIVER INITS =============================*/
-		// Window for driver 
-		windows[0].id = DRIVER;
+    // Window for driver 
+    windows[0].id = DRIVER;
     windows[0].up_port = DRIVER_UP_PORT;
     windows[0].up_pin = DRIVER_UP_PIN;
     windows[0].driver_up_port = 0;
@@ -53,24 +86,30 @@ void WINDOW_init(void){
     windows[0].bottom_limit_pin = DRIVER_BOTTOM_LIMIT_PIN;
     windows[0].jam_port = DRIVER_JAM_PORT;
     windows[0].jam_pin = DRIVER_JAM_PIN;
+    windows[0].auto_flag = 0;
+    windows[0].jam_flag = 0;
     // Initializing driver control board
     DIO_Init(DRIVER_UP_PORT, DRIVER_UP_PIN, PIN_INPUT);
     DIO_Init(DRIVER_DOWN_PORT, DRIVER_DOWN_PIN, PIN_INPUT);
-		DIO_Init(DRIVER_TOP_LIMIT_PORT, DRIVER_TOP_LIMIT_PIN, PIN_INPUT);
+    DIO_Init(DRIVER_TOP_LIMIT_PORT, DRIVER_TOP_LIMIT_PIN, PIN_INPUT);
     DIO_Init(DRIVER_BOTTOM_LIMIT_PORT, DRIVER_BOTTOM_LIMIT_PIN, PIN_INPUT);
+    // Initializing Driver Jam Sensor
     DIO_Init(DRIVER_JAM_PORT, DRIVER_JAM_PIN, PIN_INPUT);
-		DIO_Init(DRIVER_LOCK_PORT, DRIVER_LOCK_PIN, PIN_INPUT);
-		INT_init(DRIVER_LOCK_PORT, DRIVER_LOCK_PIN);
-		INT_setCallBack(DRIVER_LOCK_PORT,WINDOW_LockToggle);
-		// Initializing Driver-Passengers controls
-		DIO_Init(DRIVER_PASSENGER1_UP_PORT, DRIVER_PASSENGER1_UP_PIN, PIN_INPUT);
-		DIO_Init(DRIVER_PASSENGER1_DOWN_PORT, DRIVER_PASSENGER1_DOWN_PIN, PIN_INPUT);
-		#if (NUM_OF_WINDOWS == 4)
-		DIO_Init(DRIVER_PASSENGER2_UP_PORT, DRIVER_PASSENGER2_UP_PIN, PIN_INPUT);
-		DIO_Init(DRIVER_PASSENGER2_DOWN_PORT, DRIVER_PASSENGER2_DOWN_PIN, PIN_INPUT);		
-		DIO_Init(DRIVER_PASSENGER3_UP_PORT, DRIVER_PASSENGER3_UP_PIN, PIN_INPUT);
-		DIO_Init(DRIVER_PASSENGER3_DOWN_PORT, DRIVER_PASSENGER3_DOWN_PIN, PIN_INPUT);
-		#endif
+    INT_init(DRIVER_JAM_PORT, DRIVER_JAM_PIN);
+    INT_setCallBack(DRIVER_JAM_PORT,WINDOW_JamISR);
+    // Initializing Driver Lock
+    DIO_Init(DRIVER_LOCK_PORT, DRIVER_LOCK_PIN, PIN_INPUT);
+    INT_init(DRIVER_LOCK_PORT, DRIVER_LOCK_PIN);
+    INT_setCallBack(DRIVER_LOCK_PORT,WINDOW_LockToggle);
+    // Initializing Driver-Passengers controls
+    DIO_Init(DRIVER_PASSENGER1_UP_PORT, DRIVER_PASSENGER1_UP_PIN, PIN_INPUT);
+    DIO_Init(DRIVER_PASSENGER1_DOWN_PORT, DRIVER_PASSENGER1_DOWN_PIN, PIN_INPUT);
+    #if (NUM_OF_WINDOWS == 4)
+    DIO_Init(DRIVER_PASSENGER2_UP_PORT, DRIVER_PASSENGER2_UP_PIN, PIN_INPUT);
+    DIO_Init(DRIVER_PASSENGER2_DOWN_PORT, DRIVER_PASSENGER2_DOWN_PIN, PIN_INPUT);		
+    DIO_Init(DRIVER_PASSENGER3_UP_PORT, DRIVER_PASSENGER3_UP_PIN, PIN_INPUT);
+    DIO_Init(DRIVER_PASSENGER3_DOWN_PORT, DRIVER_PASSENGER3_DOWN_PIN, PIN_INPUT);
+    #endif
 		
     #if (NUM_OF_WINDOWS == 4)
     DIO_Init(DRIVER_PASSENGER2_UP_PORT, DRIVER_PASSENGER2_UP_PIN, PIN_INPUT);
@@ -97,12 +136,18 @@ void WINDOW_init(void){
     windows[1].bottom_limit_pin = PASSENGER1_BOTTOM_LIMIT_PIN;
     windows[1].jam_port = PASSENGER1_JAM_PORT;
     windows[1].jam_pin = PASSENGER1_JAM_PIN;
+    windows[1].auto_flag = 0;
+    windows[1].jam_flag = 0;
     // Initializing passenger 1 control board
     DIO_Init(PASSENGER1_UP_PORT, PASSENGER1_UP_PIN, PIN_INPUT);
     DIO_Init(PASSENGER1_DOWN_PORT, PASSENGER1_DOWN_PIN, PIN_INPUT);
-		DIO_Init(PASSENGER1_TOP_LIMIT_PORT, PASSENGER1_TOP_LIMIT_PIN, PIN_INPUT);
+    DIO_Init(PASSENGER1_TOP_LIMIT_PORT, PASSENGER1_TOP_LIMIT_PIN, PIN_INPUT);
     DIO_Init(PASSENGER1_BOTTOM_LIMIT_PORT, PASSENGER1_BOTTOM_LIMIT_PIN, PIN_INPUT);
     DIO_Init(PASSENGER1_JAM_PORT, PASSENGER1_JAM_PIN, PIN_INPUT);
+    // Initializing Passenger Jam Sensor
+    DIO_Init(PASSENGER1_JAM_PORT, PASSENGER1_JAM_PIN, PIN_INPUT);
+    INT_init(PASSENGER1_JAM_PORT, PASSENGER1_JAM_PIN);
+    INT_setCallBack(PASSENGER1_JAM_PORT,WINDOW_JamISR);
 		
     /*============================ End of PASSENGER 1 INITS =============================*/
 
@@ -125,12 +170,17 @@ void WINDOW_init(void){
     windows[2].bottom_limit_pin = PASSENGER2_BOTTOM_LIMIT_PIN;
     windows[2].jam_port = PASSENGER2_JAM_PORT;
     windows[2].jam_pin = PASSENGER2_JAM_PIN;
+    windows[2].auto_flag = 0;
+    windows[2].jam_flag = 0;
     // Initializing passenger 1 control board
     DIO_Init(PASSENGER2_UP_PORT, PASSENGER2_UP_PIN, PIN_INPUT);
     DIO_Init(PASSENGER2_DOWN_PORT, PASSENGER2_DOWN_PIN, PIN_INPUT);
-		DIO_Init(PASSENGER2_TOP_LIMIT_PORT, PASSENGER2_TOP_LIMIT_PIN, PIN_INPUT);
+    DIO_Init(PASSENGER2_TOP_LIMIT_PORT, PASSENGER2_TOP_LIMIT_PIN, PIN_INPUT);
     DIO_Init(PASSENGER2_BOTTOM_LIMIT_PORT, PASSENGER2_BOTTOM_LIMIT_PIN, PIN_INPUT);
     DIO_Init(PASSENGER2_JAM_PORT, PASSENGER2_JAM_PIN, PIN_INPUT);
+    DIO_Init(PASSENGER2_JAM_PORT, PASSENGER2_JAM_PIN, PIN_INPUT);
+    INT_init(PASSENGER2_JAM_PORT, PASSENGER2_JAM_PIN);
+    INT_setCallBack(PASSENGER2_JAM_PORT,WINDOW_JamISR);
     /*============================ End of PASSENGER 2 INITS =============================*/
 
     /*============================ PASSENGER 3 INITS =============================*/
@@ -150,12 +200,17 @@ void WINDOW_init(void){
     windows[3].bottom_limit_pin = PASSENGER3_BOTTOM_LIMIT_PIN;
     windows[3].jam_port = PASSENGER3_JAM_PORT;
     windows[3].jam_pin = PASSENGER3_JAM_PIN;
+    windows[3].auto_flag = 0;
+    windows[3].jam_flag = 0;
     // Initializing passenger 3 control board
     DIO_Init(PASSENGER3_UP_PORT, PASSENGER3_UP_PIN, PIN_INPUT);
     DIO_Init(PASSENGER3_DOWN_PORT, PASSENGER3_DOWN_PIN, PIN_INPUT);
-		DIO_Init(PASSENGER3_TOP_LIMIT_PORT, PASSENGER3_TOP_LIMIT_PIN, PIN_INPUT);
+    DIO_Init(PASSENGER3_TOP_LIMIT_PORT, PASSENGER3_TOP_LIMIT_PIN, PIN_INPUT);
     DIO_Init(PASSENGER3_BOTTOM_LIMIT_PORT, PASSENGER3_BOTTOM_LIMIT_PIN, PIN_INPUT);
     DIO_Init(PASSENGER3_JAM_PORT, PASSENGER3_JAM_PIN, PIN_INPUT);
+    DIO_Init(PASSENGER3_JAM_PORT, PASSENGER3_JAM_PIN, PIN_INPUT);
+    INT_init(PASSENGER3_JAM_PORT, PASSENGER3_JAM_PIN);
+    INT_setCallBack(PASSENGER3_JAM_PORT,WINDOW_JamISR);
     /*============================ End of PASSENGER 3 INITS =============================*/
 
     #endif
@@ -170,79 +225,77 @@ void WINDOW_PassengerTask(void* pvParameter){
   uint8 cmd;
   // Application
   while(1){
-    // Reading Passenger Commands
-    if (g_isLocked == 1){
-      vTaskDelay(5/portTICK_RATE_MS);
-    }
-    else{
       // Passenger Controls
-      /*============================= UP ================================*/
-      if (((IS_ON(window->up_port, window->up_pin) && (g_isLocked == 0)) || ((window->id != DRIVER) && IS_ON(window->driver_up_port, window->driver_up_pin))) && (IS_OFF(window->top_limit_port, window->top_limit_pin))){ 
-        vTaskDelay(100/portTICK_RATE_MS);
+    /*============================= UP ================================*/
+    if (((IS_ON(window->up_port, window->up_pin) && (g_isLocked == 0)) || ((window->id != DRIVER) && IS_ON(window->driver_up_port, window->driver_up_pin))) && (IS_OFF(window->top_limit_port, window->top_limit_pin))){ 
+        vTaskDelay(200/portTICK_RATE_MS);
         // Manual Control
         if (((IS_ON(window->up_port, window->up_pin) && (g_isLocked == 0)) || ((window->id != DRIVER) && IS_ON(window->driver_up_port, window->driver_up_pin))) && (IS_OFF(window->top_limit_port, window->top_limit_pin))){
-          cmd = (window->id * 10) + MOVE_UP_CMD;
-          xQueueSend(xCommandQueue, &cmd, portMAX_DELAY);
-          while(((IS_ON(window->up_port, window->up_pin) && (g_isLocked == 0)) || ((window->id != DRIVER) && IS_ON(window->driver_up_port, window->driver_up_pin))) && (IS_OFF(window->top_limit_port, window->top_limit_pin)));
-          cmd = (window->id * 10) + STOP_CMD;
-          xQueueSend(xCommandQueue, &cmd, portMAX_DELAY);
+            cmd = (window->id * 10) + MOVE_UP_CMD;
+            xQueueSend(xCommandQueue, &cmd, portMAX_DELAY);
+            while(((IS_ON(window->up_port, window->up_pin) && (g_isLocked == 0)) || ((window->id != DRIVER) && IS_ON(window->driver_up_port, window->driver_up_pin))) && (IS_OFF(window->top_limit_port, window->top_limit_pin)));
+            cmd = (window->id * 10) + STOP_CMD;
+            xQueueSend(xCommandQueue, &cmd, portMAX_DELAY);
         }
+        // Automatic Control
         else{
-          cmd = (window->id * 10) + MOVE_UP_CMD;
-					xQueueSend(xCommandQueue, &cmd, portMAX_DELAY);
+            window->auto_flag = 1;
+            cmd = (window->id * 10) + MOVE_UP_CMD;
+            xQueueSend(xCommandQueue, &cmd, portMAX_DELAY);
+            while((IS_OFF(window->top_limit_port, window->top_limit_pin)) && (window->auto_flag == 1));
+            cmd = (window->id * 10) + STOP_CMD;
+            xQueueSend(xCommandQueue, &cmd, portMAX_DELAY);
+            window->auto_flag = 0;
         }
-      }
-      /*============================= DOWN ================================*/
-      if (((IS_ON(window->down_port, window->down_pin) && (g_isLocked == 0)) || ((window->id != DRIVER) && IS_ON(window->driver_down_port, window->driver_down_pin))) && (IS_OFF(window->bottom_limit_port, window->bottom_limit_pin))){
-        vTaskDelay(100/portTICK_RATE_MS);
+    }
+
+    /*============================= DOWN ================================*/
+    if (((IS_ON(window->down_port, window->down_pin) && (g_isLocked == 0)) || ((window->id != DRIVER) && IS_ON(window->driver_down_port, window->driver_down_pin))) && (IS_OFF(window->bottom_limit_port, window->bottom_limit_pin))){ 
+        vTaskDelay(200/portTICK_RATE_MS);
         // Manual Control
         if (((IS_ON(window->down_port, window->down_pin) && (g_isLocked == 0)) || ((window->id != DRIVER) && IS_ON(window->driver_down_port, window->driver_down_pin))) && (IS_OFF(window->bottom_limit_port, window->bottom_limit_pin))){
-          cmd = (window->id * 10) + MOVE_DOWN_CMD;
-          xQueueSend(xCommandQueue, &cmd, portMAX_DELAY);
-          while(((IS_ON(window->down_port, window->down_pin) && (g_isLocked == 0)) || ((window->id != DRIVER) && IS_ON(window->driver_down_port, window->driver_down_pin))) && (IS_OFF(window->bottom_limit_port, window->bottom_limit_pin)));
-          cmd = (window->id * 10) + STOP_CMD;
-          xQueueSend(xCommandQueue, &cmd, portMAX_DELAY);
+            cmd = (window->id * 10) + MOVE_DOWN_CMD;
+            xQueueSend(xCommandQueue, &cmd, portMAX_DELAY);
+            while(((IS_ON(window->down_port, window->down_pin) && (g_isLocked == 0)) || ((window->id != DRIVER) && IS_ON(window->driver_down_port, window->driver_down_pin))) && (IS_OFF(window->bottom_limit_port, window->bottom_limit_pin)));
+            cmd = (window->id * 10) + STOP_CMD;
+            xQueueSend(xCommandQueue, &cmd, portMAX_DELAY);
         }
+        // Automatic Control
         else{
-          cmd = (window->id * 10) + MOVE_DOWN_CMD;
-					xQueueSend(xCommandQueue, &cmd, portMAX_DELAY);
+            cmd = (window->id * 10) + MOVE_DOWN_CMD;
+            xQueueSend(xCommandQueue, &cmd, portMAX_DELAY);
+            while((IS_OFF(window->bottom_limit_port, window->bottom_limit_pin)));
+            cmd = (window->id * 10) + STOP_CMD;
+            xQueueSend(xCommandQueue, &cmd, portMAX_DELAY);
         }
-      }
-			/*============================= LIMIT SWITCHES ================================*/
-			if (IS_ON(window->top_limit_port, window->top_limit_pin) || IS_ON(window->bottom_limit_port, window->bottom_limit_pin)){
-          cmd = (window->id * 10) + STOP_CMD;
-					xQueueSend(xCommandQueue, &cmd, portMAX_DELAY);
-			}
     }
-		
   }
 }
 
 
 // A motor task is created per window to handle the motor movement of each window
 void WINDOW_MotorTask(void* pvParameters){
-    uint8 cmd, window_id, iterator;
+    uint8 cmd, window_id;
     while(1){
-      if (xQueueReceive(xCommandQueue, &cmd, portMAX_DELAY)){
-        // Extract command information
-        window_id = cmd / 10;
-        cmd = cmd - (window_id * 10);
-
-        // Motor Processing 
-        switch(cmd){
-          // Move Up Direction
-          case MOVE_UP_CMD:
-            Motor_Rotate(window_id, UP);
-            break;
-          // Move Down Direction
-          case MOVE_DOWN_CMD:
-            Motor_Rotate(window_id, DOWN);
-            break;
-          // Stop Motor
-          case STOP_CMD:
-            Motor_Rotate(window_id, OFF);
-            break;
+        if (xQueueReceive(xCommandQueue, &cmd, portMAX_DELAY)){
+            // Extract command information
+            window_id = cmd / 10;
+            cmd = cmd - (window_id * 10);
+            // Motor Processing 
+            switch(cmd){
+                // Move Up Direction
+                case MOVE_UP_CMD:
+                    Motor_Rotate(window_id, UP);
+                    break;
+                // Move Down Direction
+                case MOVE_DOWN_CMD:
+                    Motor_Rotate(window_id, DOWN);
+                    break;
+                // Stop Motor
+                case STOP_CMD:
+                    Motor_Rotate(window_id, OFF);
+                    break;
+            }
         }
-			}
-		}
+    }
 }

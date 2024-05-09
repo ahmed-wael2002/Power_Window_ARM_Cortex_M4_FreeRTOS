@@ -21,4 +21,5 @@
   C:\Users\ahmed\AppData\Local\Arm\Packs\ARM\CMSIS-FreeRTOS\10.5.1\Source\include\task.h \
   C:\Users\ahmed\AppData\Local\Arm\Packs\ARM\CMSIS-FreeRTOS\10.5.1\Source\include\list.h \
   C:\Users\ahmed\AppData\Local\Arm\Packs\ARM\CMSIS-FreeRTOS\10.5.1\Source\include\semphr.h \
-  C:\Users\ahmed\AppData\Local\Arm\Packs\ARM\CMSIS-FreeRTOS\10.5.1\Source\include\queue.h
+  C:\Users\ahmed\AppData\Local\Arm\Packs\ARM\CMSIS-FreeRTOS\10.5.1\Source\include\queue.h \
+  tm4c123gh6pm.h

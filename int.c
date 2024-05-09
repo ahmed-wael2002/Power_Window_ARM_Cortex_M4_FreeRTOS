@@ -81,6 +81,64 @@ void INT_setCallBack(uint8 portNumber, void(*a_ptr)(void))
     }
 }
 
+boolean INT_isInterruptSet(uint8 portNumber, uint8 pinNumber){
+    if (portNumber>=NUM_OF_PORTS){
+        return FALSE;
+    }
+    else{
+        switch(portNumber){
+            case PORTA_ID:
+                return GET_BIT(GPIO_PORTA_RIS_R, pinNumber);
+                break;
+            case PORTB_ID:
+                return GET_BIT(GPIO_PORTB_RIS_R, pinNumber);
+                break;
+            case PORTC_ID:
+                return GET_BIT(GPIO_PORTC_RIS_R, pinNumber);
+                break;
+            case PORTD_ID:
+                return GET_BIT(GPIO_PORTD_RIS_R, pinNumber);
+                break;
+            case PORTE_ID:
+                return GET_BIT(GPIO_PORTE_RIS_R, pinNumber);
+                break;
+            case PORTF_ID:
+                return GET_BIT(GPIO_PORTF_RIS_R, pinNumber);
+                break;
+            default:
+                return FALSE;
+        }
+    }
+}
+
+void INT_clearInterrupt(uint8 portNumber, uint8 pinNumber){
+    if (portNumber>=NUM_OF_PORTS){
+        /* Do Nothing */
+    }
+    else{
+        switch(portNumber){
+            case PORTA_ID:
+                SET_BIT(GPIO_PORTA_ICR_R, pinNumber);
+                break;
+            case PORTB_ID:
+                SET_BIT(GPIO_PORTB_ICR_R, pinNumber);
+                break;
+            case PORTC_ID:  
+                SET_BIT(GPIO_PORTC_ICR_R, pinNumber);
+                break;
+            case PORTD_ID:
+                SET_BIT(GPIO_PORTD_ICR_R, pinNumber);
+                break;
+            case PORTE_ID:
+                SET_BIT(GPIO_PORTE_ICR_R, pinNumber);
+                break;
+            case PORTF_ID:  
+                SET_BIT(GPIO_PORTF_ICR_R, pinNumber);
+                break;
+        }
+    }    
+}
+
 /*===============================================================================*/
 /*                             INTERRUPT HANDLERS                                */
 /*===============================================================================*/
@@ -92,7 +150,6 @@ void GPIOA_Handler(void)
     {
         /* Call the Call Back function in the application after the edge is detected */
         (*callBackPtr[PORTA_ID])(); /* another method to call the function using pointer to function g_callBackPtr(); */
-        GPIO_PORTA_ICR_R = 0xFF;
     }
 }
 
@@ -103,7 +160,6 @@ void GPIOB_Handler(void)
     {
         /* Call the Call Back function in the application after the edge is detected */
         (*callBackPtr[PORTB_ID])(); /* another method to call the function using pointer to function g_callBackPtr(); */
-        GPIO_PORTB_ICR_R = 0xFF;
     }
 }
 
@@ -114,7 +170,6 @@ void GPIOC_Handler(void)
     {
         /* Call the Call Back function in the application after the edge is detected */
         (*callBackPtr[PORTC_ID])(); /* another method to call the function using pointer to function g_callBackPtr(); */
-        GPIO_PORTC_ICR_R = 0xFF;
     }
 }
 
@@ -125,7 +180,6 @@ void GPIOD_Handler(void)
     {
         /* Call the Call Back function in the application after the edge is detected */
         (*callBackPtr[PORTD_ID])(); /* another method to call the function using pointer to function g_callBackPtr(); */
-        GPIO_PORTD_ICR_R = 0xFF;
     }
 }
 
@@ -136,7 +190,6 @@ void GPIOE_Handler(void)
     {
         /* Call the Call Back function in the application after the edge is detected */
         (*callBackPtr[PORTE_ID])(); /* another method to call the function using pointer to function g_callBackPtr(); */
-        GPIO_PORTE_ICR_R = 0xFF;
     }
 }
 
@@ -147,6 +200,5 @@ void GPIOF_Handler(void)
     {
         /* Call the Call Back function in the application after the edge is detected */
         (*callBackPtr[PORTF_ID])(); /* another method to call the function using pointer to function g_callBackPtr(); */
-        GPIO_PORTF_ICR_R = 0xFF;
     }
 }
