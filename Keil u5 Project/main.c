@@ -1,8 +1,5 @@
+// Including Windows Application APIs
 #include "windows.h"
-#include "led.h"
-#include "delay.h"
-#include "motor.h"
-#include "DIO.h"
 // FreeRTOS Libraries 
 #include "FreeRTOS.h"
 #include "task.h"
