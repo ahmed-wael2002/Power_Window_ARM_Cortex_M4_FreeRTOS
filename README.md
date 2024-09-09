@@ -27,33 +27,16 @@ This project showcases a **Power Window Control System** designed for modern veh
 ---
 
 ### 🛠️ System Architecture
-- **Application Layer:** 
-  - Contains FreeRTOS kernel files, `windows.h`, and `main.c` where window control tasks are defined.
-- **Hardware Abstraction Layer:**
-  - Interfaces with the motor and interrupt hardware. Supports different motor types.
-- **Task Structure:**
-  - Includes modular tasks for window control, motor operation, and jam protection, which can be easily instantiated and scaled.
- 
+![System Diagram](https://github.com/ahmed-wael2002/Power_Window_ARM_Cortex_M4_FreeRTOS/blob/main/Snapshots/system.png)
+
 ---
 
-### 🔧 Demonstration
-- **Hardware Used:**
-  - Dual H-Bridge Motor Driver
-  - DC Gearbox Motors with Back Shaft
-  - Micro Limit Switches
-  - 3-level Rocker Switch
-  - Push Buttons
-  - Tiva C Launchpad (ARM Cortex M4-based microcontroller)
-- **Circuit Wiring:**
-  - Circuit diagram created using Fritzing for easy visualization.
- 
- --- 
+### 🔧 Configuration
+1- Edit the system configurations in Windows.h (Passenger Control GPIO - Driver Control GPIO - Motor GPIO - etc.) as illustrated in the following screenshot.
+2- Rebuild the system.
+![System Diagram](https://github.com/ahmed-wael2002/Power_Window_ARM_Cortex_M4_FreeRTOS/blob/main/Snapshots/code.png)
 
-### 💻 Software System Integration
-- **System Configurations:**
-  - Supports 2-window (coupe) and 4-window (sedan) setups.
-- **Main Function Setup:**
-  - Code initializes tasks and hardware components to manage the window control system seamlessly.
+--- 
 
 ### 📂 Additional Resources
 - **[📹 Video Demonstration & Documentation](https://drive.google.com/file/d/1O1Iedp_n3LcsQSbOaQz3eCcksW22hzNp/view?usp=sharing)**
